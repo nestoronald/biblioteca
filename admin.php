@@ -423,50 +423,53 @@
 	function menuShow(){
 		$respuesta= new xajaxResponse();
 
-                $menu="";
+        $menu="";
         if(isset($_SESSION["admin"])){
 
             /*Menú de la nueva plantilla 2012*/
             //switch($_SESSION["users_type"]){
             //case 0: //el segundo parametro es el currentpage al ser cero utiliza el valor del formulario
-                $menu.='<li><a id="new_register" href="#nuevo-registro" title="Nuevo Registro"> Nuevo </a></li>';
-                $menu.="<li><a href='#Catalogo-busqueda' onclick='xajax_searchCategory(); return false;' > Consultas</a></li>";
-                $menu.="<li><a href='#Lista-reserva' onclick='xajax_ListReserva(); return false;' >Reservas</a></li>";
-                $form["demo"]="12";
-                // $menu.="<li><a href='#Lista-registros' onclick='xajax_auxSearchShow(20,1,\"$form\"); return false;' ><img width='12px;' style='vertical-align:middle;' src='img/iconos/search_16.png' /> Lista de registros</a></li>";
-                $menu.="<li><a href='#autores' onclick='xajax_auxAuthorShow(5000,1,\"$form\"); return false;' > Autores</a></li>";
-            //}
+              $menu.='<li><a id="new_register" href="#nuevo-registro" title="Nuevo Registro"> Nuevo </a></li>';
+              $menu.="<li><a href='#Catalogo-busqueda' onclick='xajax_searchCategory(); return false;' > Consultas</a></li>";
+              $menu.="<li><a href='#Lista-reserva' onclick='xajax_ListReserva(); return false;' >Reservas</a></li>";
+              $form["demo"]="12";
+                    // $menu.="<li><a href='#Lista-registros' onclick='xajax_auxSearchShow(20,1,\"$form\"); return false;' ><img width='12px;' style='vertical-align:middle;' src='img/iconos/search_16.png' /> Lista de registros</a></li>";
+              $menu.="<li><a href='#autores' onclick='xajax_auxAuthorShow(5000,1,\"$form\"); return false;' > Autores</a></li>";
+                //}
+              $respuesta->assign("divformlogin", "style.display", "none");
+              $medu_rigth.='<li class="fright"><a href="Instructivo_uso_Administrador.pdf" target="__blank"><b> ? </b> </a></li>';
+              $medu_rigth.='<li class="fright"><a href="#" onclick="xajax_cerrarSesion(); return false">Cerrar sesión</a></li>';
+              $medu_rigth.='<li class="fright"><a href="miperfil.php">'.$_SESSION["admin"].'</a></li>';
 
-            $menu.='<li><a href="#" onclick="xajax_cerrarSesion(); return false">Cerrar sesión</a></li>';
-            $respuesta->assign("divformlogin", "style.display", "none");
-            $html='<table><tr><td style="text-align: center;">';
-            $html.='<img src="img/biblioteca.png" />';
-            $html.='</td></tr></table>';
-            $respuesta->assign("imghome", "innerHTML", $html);
-        }
+              $html='<table><tr><td style="text-align: center;">';
+              $html.='<img src="img/biblioteca.png" />';
+              $html.='</td></tr></table>';
+              $respuesta->assign("imghome", "innerHTML", $html);
 
-		$respuesta->assign("menu", "innerHTML", $menu);
-		$respuesta->script("
-					$('#new_register').click(function(){
-						xajax_formCategoryShow(2); return false;
-					})
-			");
-		$respuesta->script('
-                    $(function(){
+              $respuesta->assign("menu", "innerHTML", $menu);
+    		  $respuesta->assign("menu_rigth", "innerHTML", $medu_rigth);
+    		  $respuesta->script("
+    					$('#new_register').click(function(){
+    						xajax_formCategoryShow(2); return false;
+    					})
+    			");
+    		  $respuesta->script('
+                        $(function(){
 
-                        $("ul.dropdown li").hover(function(){
-                            $(this).addClass("hover");
-                            $("ul:first",this).css("visibility", "visible");
-                        }, function(){
+                            $("ul.dropdown li").hover(function(){
+                                $(this).addClass("hover");
+                                $("ul:first",this).css("visibility", "visible");
+                            }, function(){
 
-                            $(this).removeClass("hover");
-                            $("ul:first",this).css("visibility", "hidden");
+                                $(this).removeClass("hover");
+                                $("ul:first",this).css("visibility", "hidden");
+                            });
+
+                            $("ul.dropdown li ul li:has(ul)").find("a:first").append(" &raquo; ");
+
                         });
-
-                        $("ul.dropdown li ul li:has(ul)").find("a:first").append(" &raquo; ");
-
-                    });
-                ');
+                    ');
+        }
 		return $respuesta;
 	}
 
@@ -519,33 +522,33 @@
 				unset($_SESSION["editar"]);
 			}
 		}
-	    $html="<form name='frm_type' id='frm_type' class='center block_1'>
-	    	<label for='type_material'>Selecione un tipo de material </label>
-	    	<select name='type_material' id='type_material' class='span8'>
-		    	<option value='999'>Selecione tipo de material</option>
-		    	<option value='libros'>Libros</option>
-		    	<option value='pub_perio'>Publicaciones Periódicas</option>
-		    	<option value='mapas'>Mapas</option>
-		    	<option value='tesis'>Tesis</option>
-		    	<option value='other'>Otros materiales</option>
-	    	</select>
-	    	</form>";
-        $respuesta->Assign("ListReserva","style.display","none");
-        $respuesta->Assign("consultas","style.display","none");
-		$respuesta->Assign("paginator","style.display","none");
-		$respuesta->Assign("imghome","style.display","none");
-		$respuesta->Assign("formulario","style.display","none");
-		$respuesta->Assign("searchCat","style.display","none");
-		$respuesta->Assign("resultSearch1","style.display","none");
-		$respuesta->Assign("author_section","style.display","none");
-		$respuesta->Assign("paginatorAuthor","style.display","none");
-		$respuesta->Assign("option_category","style.display","block");
-		$respuesta->Assign("option_category","innerHTML",$html);
 
-
-                //$respuesta->alert(print_r($_SESSION, true));
-		$respuesta->script('
-						$("#type_material").change(function(){
+        if (isset($_SESSION["admin"])) {
+    	    $html="<form name='frm_type' id='frm_type' class='center block_1'>
+    	    	<label for='type_material'>Selecione un tipo de material </label>
+    	    	<select name='type_material' id='type_material' class='span8'>
+    		    	<option value='999'>Selecione tipo de material</option>
+    		    	<option value='libros'>Libros</option>
+    		    	<option value='pub_perio'>Publicaciones Periódicas</option>
+    		    	<option value='mapas'>Mapas</option>
+    		    	<option value='tesis'>Tesis</option>
+    		    	<option value='other'>Otros materiales</option>
+    	    	</select>
+    	    	</form>";
+            $respuesta->Assign("ListReserva","style.display","none");
+            $respuesta->Assign("consultas","style.display","none");
+    		$respuesta->Assign("paginator","style.display","none");
+    		$respuesta->Assign("imghome","style.display","none");
+    		$respuesta->Assign("formulario","style.display","none");
+    		$respuesta->Assign("searchCat","style.display","none");
+    		$respuesta->Assign("resultSearch1","style.display","none");
+    		$respuesta->Assign("author_section","style.display","none");
+    		$respuesta->Assign("paginatorAuthor","style.display","none");
+    		$respuesta->Assign("option_category","style.display","block");
+            $respuesta->Assign("option_category","innerHTML",$html);
+            //$respuesta->alert(print_r($_SESSION, true));
+            $respuesta->script('
+                        $("#type_material").change(function(){
                             if ($(this).val()!="999"){
                                 sel = $(this).val();
                                 xajax_formPonenciasShow(0,xajax.getFormValues("frm_type"));
@@ -557,12 +560,16 @@
                                     $("#type_material option[value="+sel+"]").attr("selected",true);
                                 }
                             }
-						})
-						');
+                        })
+                        ');
+        }
+        else{
+            $respuesta->redirect("admin.php", 0);
+        }
+
 
 		return $respuesta;
 	}
-
 
 
 	function formPonenciasShow($iddata=0,$form_1=""){
@@ -1197,8 +1204,7 @@
         $objResponse->assign("newFormAuthor","innerHTML",formAuthorShow());
         $objResponse->assign("newFormAuthor_02","innerHTML",formAuthorShow());
 
-	    //###############################################################
-	    //$objResponse->script("xajax_iniAreaTheme('titulo5')");
+
 	    // Temas relacionados
 		$link="<a onclick=\"xajax_displaydiv('area_tema','titulo5'); return false;\" class='tab-title' href='#' rel='tooltip' title='Temas Relacionados'>Temas Relacionados</a>";
 		$objResponse->assign('titulo5',"innerHTML",$link);
@@ -3440,7 +3446,6 @@
 	*******************************************************************/
 
 	$xajax->registerFunction('newRegisterBiblio');
-	$xajax->registerFunction('subArea');
 	$xajax->registerFunction('registerSubAreas');
 	$xajax->registerFunction('menuAAShow');
 	$xajax->registerFunction('formCategoryShow');
@@ -3467,7 +3472,6 @@
 
     /*******Seccion Informacion Interna**********/
 
-	$xajax->registerFunction('iniAreas');
 	$xajax->registerFunction('registerYearQuarter');
 	$xajax->registerFunction('comboYearRegisterShow');
 	$xajax->registerFunction('comboQuarter');
@@ -3531,8 +3535,6 @@
 	// ------------------------------------------------------------------
 
 	$xajax->registerFunction('iniAreaTheme');
-	$xajax->registerFunction('iniOtrosTemasShow');
-	$xajax->registerFunction('iniAreas');
 	$xajax->registerFunction('newThemeRegister');
 	$xajax->registerFunction('newThemeInsert');
 	$xajax->registerFunction('newThemeShow');

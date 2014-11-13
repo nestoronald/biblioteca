@@ -287,8 +287,6 @@
 
 	            $i++;
 	        }
-// 	        if(isset($result["iddata"])){
-// -              $result["Count"]=count($result["iddata"]);}
 
 	        if(isset($result["idbook"])){
 	            $result["Count"]=count($result["idbook"]);
@@ -345,16 +343,14 @@
 	        }
 
 	    }
-	else{
-	    $result["Error"]=1;
-	    $result["Msg"]="No se ejecuto el select";
+    	else{
+    	    $result["Error"]=1;
+    	    $result["Msg"]="No se ejecuto el select";
 
-	}
-
+    	}
 	    $dbh = null;
 	    $result["Query"]=$sql;
-
-	                return $result;
+	    return $result;
 
 	}
 
@@ -362,29 +358,20 @@
 
 	***************************************************/
 	function recuperarClaveSQL($user,$correo){
-
-                /*
-	        $usuario=trim($formLogin["usuario"]);
-	        $clave_old=md5(trim($clave_old));
-                $clave_new=md5(trim($clave_new));
-                */
-
 		$dbh=conx("DB_ITS","wmaster","igpwmaster");
 		$dbh->query("SET NAMES 'utf8'");
 
-	        //$sqlSelect="select a.idarea,a.area_description, u.idusers, u.users_name, u.users_type from area a, users u where a.idarea=u.idarea and u.users_name='$usuario' and users_password='$clave' and users_type='1'";
-                $sqlSelect="select * from users where users_name='$user' and users_email='$correo' and users_type='1'";
+        $sqlSelect="select * from users where users_name='$user' and users_email='$correo' and users_type='1'";
 
-                $i=0;
-                $result="";
-                if($dbh->query($sqlSelect)){
-                    foreach($dbh->query($sqlSelect) as $row) {
-                        $result["idusers"][$i]= $row["idusers"];
-                        $result["users_name"][$i]=$row["users_name"];
-                        $result["users_email"][$i]=$row["users_email"];
-                        $result["users_type"][$i]=$row["users_type"];
-
-                    }
+        $i=0;
+        $result="";
+        if($dbh->query($sqlSelect)){
+            foreach($dbh->query($sqlSelect) as $row) {
+                $result["idusers"][$i]= $row["idusers"];
+                $result["users_name"][$i]=$row["users_name"];
+                $result["users_email"][$i]=$row["users_email"];
+                $result["users_type"][$i]=$row["users_type"];
+            }
 
 	        if(isset($result["idusers"])){
                     $result["Msg"]="se ejecuto select";
@@ -400,46 +387,35 @@
 	            $result["Count"]=0;
 	        }
 
-
-                if($result["Count"]>0){
+            if($result["Count"]>0){
                     /*
                     $sqlUpdate="update users set users_password='$clave_new', users_email='$correo' where idusers=$iduser ";
-
                     if($dbh->query($sqlUpdate)){
                     */
                         $mensaje="Usuario y Correo coinciden";
 
                         $result["Error"]=0;
                         $result["Msg"]=$mensaje;
-
                     /*}
                     else{
                         $result["Error"]=1;
                         $result["Msg"]="No se pudo realizar la consulta";
                     }*/
-                }
-                else{
+            }
+            else{
                     $result["Error"]=1;
                     $result["Msg"]="Usuario y Correo no coinciden";
-                }
-
+            }
 	    }
-	else{
-	    $result["Error"]=1;
-	    $result["Msg"]="No se ejecuto el select";
-
-	}
-
+       	else{
+        	    $result["Error"]=1;
+        	    $result["Msg"]="No se ejecuto el select";
+        }
 	    $dbh = null;
 	    $result["Query_select"]=$sqlSelect;
             //$result["Query_update"]=$sqlUpdate;
-
-            return $result;
-
+        return $result;
 	}
-
-
-
 
 	/**************************************************
 
@@ -474,67 +450,56 @@
 
 	***************************************************/
 	function cambiarClaveSQL($clave_old,$clave_new,$correo,$iduser){
-
-	        //$usuario=trim($formLogin["usuario"]);
+	    //$usuario=trim($formLogin["usuario"]);
 	    $clave_old=md5(trim($clave_old));
         $clave_new=md5(trim($clave_new));
 
 		$dbh=conx("DB_ITS","wmaster","igpwmaster");
 		$dbh->query("SET NAMES 'utf8'");
+	    //$sqlSelect="select a.idarea,a.area_description, u.idusers, u.users_name, u.users_type from area a, users u where a.idarea=u.idarea and u.users_name='$usuario' and users_password='$clave' and users_type='1'";
+        $sqlSelect="select * from users where idusers='$iduser' and users_password='$clave_old' and users_type='1'";
 
-	        //$sqlSelect="select a.idarea,a.area_description, u.idusers, u.users_name, u.users_type from area a, users u where a.idarea=u.idarea and u.users_name='$usuario' and users_password='$clave' and users_type='1'";
-                $sqlSelect="select * from users where idusers='$iduser' and users_password='$clave_old' and users_type='1'";
-
-                $i=0;
-                if($dbh->query($sqlSelect)){
-                    foreach($dbh->query($sqlSelect) as $row) {
-                        $result["idusers"][$i]= $row["idusers"];
-                    }
-
+        $i=0;
+        if($dbh->query($sqlSelect)){
+            foreach($dbh->query($sqlSelect) as $row) {
+                $result["idusers"][$i]= $row["idusers"];
+            }
 	        if(isset($result["idusers"])){
                     //$result["Msg"]="se ejecuto select";
 	                for($i=0;$i<count($result["idusers"]);$i++){
 	                        $result["idusers"]=$result["idusers"][$i];
-                        }
-                        $result["Count"]=count($result["idusers"]);
-                }
+                    }
+                    $result["Count"]=count($result["idusers"]);
+            }
 	        else{
 	            $result["Count"]=0;
 	        }
 
+            if($result["Count"]>0){
+                $sqlUpdate="update users set users_password='$clave_new', users_email='$correo' where idusers=$iduser ";
 
-                if($result["Count"]>0){
-                    $sqlUpdate="update users set users_password='$clave_new', users_email='$correo' where idusers=$iduser ";
-
-                    if($dbh->query($sqlUpdate)){
-
-                        $mensaje="Clave cambiada correctamente";
-
-                        $result["Error"]=0;
-                        $result["Msg"]=$mensaje;
-                    }
-                    else{
-                        $result["Error"]=1;
-                        $result["Msg"]="No se pudo realizar la consulta";
-                    }
+                if($dbh->query($sqlUpdate)){
+                   $mensaje="Clave cambiada correctamente";
+                   $result["Error"]=0;
+                   $result["Msg"]=$mensaje;
                 }
                 else{
-                    $result["Msg"]="Clave Incorrecta";
+                    $result["Error"]=1;
+                    $result["Msg"]="No se pudo realizar la consulta";
                 }
-
+            }
+            else{
+                    $result["Msg"]="Clave Incorrecta";
+            }
 	    }
-	else{
-	    $result["Error"]=1;
-	    $result["Msg"]="No se ejecuto el select";
-
-	}
-
-	    $dbh = null;
-	    $result["Query_select"]=$sqlSelect;
-            $result["Query_update"]=$sqlUpdate;
-
-            return $result;
-
+    	else{
+    	    $result["Error"]=1;
+    	    $result["Msg"]="No se ejecuto el select";
+    	}
+    	$dbh = null;
+    	$result["Query_select"]=$sqlSelect;
+        $result["Query_update"]=$sqlUpdate;
+        return $result;
 	}
 
 	function newPonenciaSQL($action,$iddata=0,$idsubcategory,$xml,$sede=1){
@@ -862,5 +827,26 @@
 		$dbh = null;
 		return $result;
 	}
+    function userQuery($user=""){
+        $dbh=conx("biblioteca_virtual","wmaster","igpwmaster");
+        $dbh->query("SET NAMES 'utf8'");
+        if ($stmt = $dbh->prepare("SELECT * FROM users WHERE users_name = ? LIMIT 1")) {
+            $stmt->execute(array($user));
+            $result=$stmt->fetch(PDO::FETCH_ASSOC);
+            $result["users_name"]=$result["users_name"];
+            $result["users_info"]=$result["users_info"];
+            $result["sede"]=$result["sede"];
+            if($stmt->rowCount() == 1) {// member existe
+                return $result;
+            }
+            else{
+                return -100;
+            }
+        }
+        else{
+            return -100;
+        }
+        $dbh = null;
+    }
 
 ?>

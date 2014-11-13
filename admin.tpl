@@ -79,7 +79,7 @@
                             </button>
                             <div class="nav-collapse collapse">
                                 <ul id="menu" class=" nav"></ul>
-                                <ul class="navigp"><li class="fright"><a href="Instructivo_uso_Administrador.pdf" target="__blank"> Orientación de Uso</a></li></ul>
+                                <ul class="navigp" id="menu_rigth"></ul>
                             </div>
                         </div>
                     </div>
@@ -99,10 +99,7 @@
                             </div>
         </div>
         <div class="container div-login-main">
-
-
                 <div id="divformlogin"  name="formlogin">
-
                 </div>
 	    </div>
 	      <hr class="space">

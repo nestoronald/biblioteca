@@ -459,34 +459,6 @@ function iniTitulo($divTitulo){
 	}
 
 
-	function iniAreas($divTitulo){
-		$objResponse = new xajaxResponse();
-		$link="<a onclick=\"xajax_displaydiv('areas','$divTitulo'); return false;\" href='#'>&Aacute;rea</a>";
-		$objResponse->Assign($divTitulo,"innerHTML",$link);
-
-		if($_SESSION["idarea"]==1){
-		    $objResponse->script("xajax_subArea()");
-		}
-		else{
-		    $cadena="xajax_iniOtrasAreasShow('".$_SESSION["idarea"]."')";
-		    $objResponse->script($cadena);
-		}
-
-	    $cadena="xajax_iniAreasAdministrativasShow('".$_SESSION["idarea"]."')";
-	    $objResponse->script($cadena);
-
-		$subcategory=$_SESSION["subcategory"];
-
-		switch($subcategory){
-		    case "charlas_internas":
-		        $cadena="xajax_iniInstitucionExterna('tit_inst_ext','cont_inst_ext')";
-		        $objResponse->script($cadena);
-		    break;
-
-		}
-	    return $objResponse;
-	}
-
 	function iniInstitucionExterna($tit_div,$cont_div){
 
 		$respuesta = new xajaxResponse();
@@ -540,11 +512,10 @@ function iniTitulo($divTitulo){
 							<input type="checkbox" value="'.$result["idtheme"][$i].'">'.$result["destheme"][$i].'
 						</label>';
 			}
-
 		}
-
 		$objResponse->assign("conte_temas","innerHTML",$html);
 		return $objResponse;
 	}
+
 
 ?>

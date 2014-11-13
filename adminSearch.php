@@ -1533,43 +1533,6 @@ function readSessionArea(){
 	    return (string)$range;
 	}
 
-
-
-
-function subArea($idarea=0){
-
-	$titulo="Sub &Aacute;reas de ".$_SESSION["area_description"];
-		$respuesta = new xajaxResponse();
-
-	if(isset($_SESSION["edit"])){
-	    $recuperar=$_SESSION["edit"];
-	}
-	elseif(isset($_SESSION["tmp"])){
-	    $recuperar=$_SESSION["tmp"];
-	}
-
-    //$result=iniAreaResult("single",$idarea);
-        $desc = array("IDI","Operaciones","Cielo","EI","IT");
-	$id = array(1,2,3,4,5);
-
-    $html="";
-
-        for($i=0;$i<count($id);$i++){
-            $key = $id[$i];
-            if(isset($recuperar["subAreas"][$key])){
-                $html.="<p><input type=checkbox checked onclick=\"xajax_registerSubAreas('".$id[$i]."','".$desc[$i]."');\" />&nbsp;".$desc[$i]."</p>";
-            }
-            else{
-                $html.="<p><input type=checkbox onclick=\"xajax_registerSubAreas('".$id[$i]."','".$desc[$i]."');\"  />&nbsp;".$desc[$i]."</p>";
-            }
-        }
-
-    $respuesta->Assign("divSubAreas","innerHTML",$html);
-    $respuesta->Assign("titSubAreas","innerHTML",$titulo);
-
-    return $respuesta;
-}
-
 function newThemeShow(){
 
     $respuesta = new xajaxResponse();
