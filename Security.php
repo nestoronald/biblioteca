@@ -291,23 +291,21 @@ function login_check($dbh) {
     }
 }
 
-
-
-    function igpcrypt($cadena, $frase = "igpCNDG"){
-        $clave=md5($frase);
-        $cifrado = MCRYPT_RIJNDAEL_256;
-        $modo = MCRYPT_MODE_ECB;
-        return mcrypt_encrypt($cifrado, $clave, $cadena, $modo, mcrypt_create_iv(mcrypt_get_iv_size($cifrado, $modo), MCRYPT_RAND));
-    }
-
-    function igpdecrypt($cadena, $frase = "igpCNDG"){
-        $clave=md5($frase);
+function igpcrypt($cadena, $frase = "igpCNDG"){
+    $clave=md5($frase);
     $cifrado = MCRYPT_RIJNDAEL_256;
-        $modo = MCRYPT_MODE_ECB;
-        return mcrypt_decrypt($cifrado, $clave, $cadena, $modo, mcrypt_create_iv(mcrypt_get_iv_size($cifrado, $modo), MCRYPT_RAND));
-    }
+    $modo = MCRYPT_MODE_ECB;
+    return mcrypt_encrypt($cifrado, $clave, $cadena, $modo, mcrypt_create_iv(mcrypt_get_iv_size($cifrado, $modo), MCRYPT_RAND));
+}
 
-    function arrayToXml_01($array,$lastkey='root'){
+function igpdecrypt($cadena, $frase = "igpCNDG"){
+    $clave=md5($frase);
+    $cifrado = MCRYPT_RIJNDAEL_256;
+    $modo = MCRYPT_MODE_ECB;
+    return mcrypt_decrypt($cifrado, $clave, $cadena, $modo, mcrypt_create_iv(mcrypt_get_iv_size($cifrado, $modo), MCRYPT_RAND));
+}
+
+function arrayToXml_01($array,$lastkey='root'){
 
         $buffer="";
         $buffer.="<".$lastkey.">";
@@ -332,7 +330,7 @@ function login_check($dbh) {
         }
         $buffer.="</".$lastkey.">\n";
         return $buffer;
-    }
+}
 
 
 ?>

@@ -1426,9 +1426,7 @@
 	$xajax->registerFunction('searchPublicationShow');
 	$xajax->registerFunction('searchPublication');
 	$xajax->registerFunction('comboEstadoShow');
-	$xajax->registerFunction('comboTipoPublicacionShow');
 	$xajax->registerFunction('comboTipoFechasShow');
-	$xajax->registerFunction('comboReferenciaShow');
 	$xajax->registerFunction('comboMonthShow');
 	$xajax->registerFunction('comboYearShow');
 	$xajax->registerFunction('comboRegionShow');

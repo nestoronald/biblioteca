@@ -77,38 +77,38 @@ function iniAuthorSecShow(){
     $titulo="AUTOR SECUNDARIO";
 	$respuesta = new xajaxResponse();
 
-$html='<br />
-<fieldset>
-<p><table class="tablecontent"><tr><td>
-<!--<div id="sesion_authorSEC"></div>-->
-<td>
-<div id="rq_authorSEC"></div>
-            <div class="paginacion">
-                <div id="paginatorSEC" class="wp-pagenavi"></div>
-            </div>
-</td></tr></table></p>
+    $html='<br />
+    <fieldset>
+    <p><table class="tablecontent"><tr><td>
+    <!--<div id="sesion_authorSEC"></div>-->
+    <td>
+    <div id="rq_authorSEC"></div>
+                <div class="paginacion">
+                    <div id="paginatorSEC" class="wp-pagenavi"></div>
+                </div>
+    </td></tr></table></p>
 
-            <br />
-        <form name="autorSEC" id="autorSEC" onsubmit="xajax_auxAuthorSecShow(5,1,xajax.getFormValues(\'autorSEC\')); return false;">
-            <p><label class="left">Añadir autor:</label><input type="text" name="sAuthor" id="sAuthor" class="field">
-            <input type="submit" value="Buscar" class="ui-state-default ui-corner-all">
+                <br />
+            <form name="autorSEC" id="autorSEC" onsubmit="xajax_auxAuthorSecShow(5,1,xajax.getFormValues(\'autorSEC\')); return false;">
+                <p><label class="left">Añadir autor:</label><input type="text" name="sAuthor" id="sAuthor" class="field">
+                <input type="submit" value="Buscar" class="ui-state-default ui-corner-all">
 
-            <input type="radio" checked="checked" name="search_by" id="search_by" value="1"><b>Apellidos </b>&nbsp;
-            <input type="radio" name="search_by" id="search_by" value="2"><b>Nombre</b><br>
+                <input type="radio" checked="checked" name="search_by" id="search_by" value="1"><b>Apellidos </b>&nbsp;
+                <input type="radio" name="search_by" id="search_by" value="2"><b>Nombre</b><br>
 
-        </p>
+            </p>
 
-        </form>
-</fieldset>
-';
+            </form>
+    </fieldset>
+    ';
 
-    //$cadena="xajax_searchAuthorSesionSecShow()";
-    //$respuesta->script($cadena);
+        //$cadena="xajax_searchAuthorSesionSecShow()";
+        //$respuesta->script($cadena);
 
-    $respuesta->Assign("search_authorSEC","innerHTML",$html);
-    $respuesta->Assign("titautorSEC","innerHTML","<a href=#1 onclick=\"xajax_fadeappear('search_authorSEC','titautorSEC','$titulo');return false;\">$titulo</a>");
+        $respuesta->Assign("search_authorSEC","innerHTML",$html);
+        $respuesta->Assign("titautorSEC","innerHTML","<a href=#1 onclick=\"xajax_fadeappear('search_authorSEC','titautorSEC','$titulo');return false;\">$titulo</a>");
 
-return $respuesta;
+    return $respuesta;
 }
 
 
@@ -187,152 +187,6 @@ function iniTitulo($divTitulo){
 }
 
 
-	function iniTitulo_Tipo_Presentado($divTitulo){
-		$titulo="T&iacute;tulo / Tipo";
-		$respuesta = new xajaxResponse();
-
-		if(isset($_SESSION["edit"])){
-		    $recuperar=$_SESSION["edit"];
-		}
-		elseif(isset($_SESSION["tmp"])){
-		    $recuperar=$_SESSION["tmp"];
-		 }
-
-        if(isset($recuperar["titulo"])){
-            $tit=$recuperar["titulo"];
-        }
-        else{
-            $tit="";
-        }
-
-        //Presentado por
-        if(isset($recuperar["prePorNombre"])){
-            $prePorNombre=$recuperar["prePorNombre"];
-        }
-        else{
-            $prePorNombre="";
-        }
-
-        if(isset($recuperar["prePorApellido"])){
-            $prePorApellido=$recuperar["prePorApellido"];
-        }
-        else{
-            $prePorApellido="";
-        }
-
-        if(isset($recuperar["idtipoPonencia"])){
-            $tipoPonencia_id=$recuperar["idtipoPonencia"];
-        }
-        else{
-            $tipoPonencia_id=0;
-        }
-
-        if(isset($recuperar["tipoPonencia_description"])){
-            $tipoPonencia_description=$recuperar["tipoPonencia_description"];
-        }
-        else{
-            $tipoPonencia_description="";
-        }
-		$tipoPonencia="";
-		$tipoPonencia=comboTipoPonencia($tipoPonencia_id);
-
-
-		$html="<form name='tit_tipo_prepor' id='tit_tipo_prepor' onSubmit='xajax_registerTitTipo(xajax.getFormValues(\"tit_tipo_prepor\")); return false;'>
-       	<div style='clear:both'></div>
-
-       	<div class='campo-buscador' id='tit_tipoPonencia'>Tipo de ponencia</div>
-       	<div class='contenedor-combo-buscador-1' id='tipoPonencia'>$tipoPonencia</div>
-       	<input type='hidden' value='tipoPonencia_description' id='tipoPonencia_txt' name='tipoPonencia_txt' class='field'>
-		<div style='clear:both'></div>
-		<div class='campo-buscador'>Título:&nbsp;</div>
-       	<div class='contenedor-caja-buscador-1'>
-       	<input type='text' onchange='xajax_registerTitulo(this.value); return false;' value='$tit' id='title' name='title' class='caja-buscador-1' /></div>
-		<div style='clear:both'></div>
-
-       	<div class='txt-azul'>Presentado Por:</div>
-       	<div class='campo-buscador'>Nombre:</div>
-       	<div class='contenedor-caja-buscador-1'>
-       	<input type='text' maxlength='1' onchange='xajax_registerPrePorNombre(this.value); return false;' value='$prePorNombre' id='prePorNombre' name='prePorNombre' class='caja-buscador-1'>
-       	</div>
-		<div style='clear:both'></div>
-       	<div class='campo-buscador'>Apellido:</div>
-       	<div class='contenedor-caja-buscador-1'>
-       	<input type='text' onchange='xajax_registerPrePorApellido(this.value); return false;' value='$prePorApellido' id='prePorApellido' name='prePorApellido' class='caja-buscador-1'>
-		</div>
-		<div style='clear:both'></div>
-       	</form>";
-
-	    //$respuesta->script("xajax_comboTipoPonencia($tipoPonencia_id)");
-	    $respuesta->Assign("titulo_tipo_prepor","innerHTML",$html);
-		$respuesta->Assign($divTitulo,"innerHTML","<a href=#1 onclick=\"xajax_displaydiv('titulo_tipo_prepor','$divTitulo'); return false;\">$titulo</a>");
-		return $respuesta;
-	}
-
-	function iniTitulo_Resumen(){
-
-		//$respuesta = new xajaxResponse();
-
-		//$objResponse->alert(print_r($_SESSION["tmp_edit"]["titulo"], true));
-
-		if(isset($_SESSION["edit"])){
-		    $recuperar=$_SESSION["edit"];
-		}
-		elseif(isset($_SESSION["tmp"])){
-		    $recuperar=$_SESSION["tmp"];
-		 }
-
-		if(isset($recuperar["titulo"])){
-			$tit=$recuperar["titulo"];
-		}
-                else{
-			$tit="";
-		}
-
-
-		if(isset($recuperar["resumen"])){
-			$abstract=$recuperar["resumen"];
-		}
-		else{
-			$abstract="";
-		}
-
-		if(isset($recuperar["enlace"])){
-			$link=$recuperar["enlace"];
-	      //$link=substr($recuperar["enlace"], 7);
-		}
-		else{
-			$link="http://";
-		}
-
-
-		$html="<form name='tit_res' id='tit_res' >
-				<div class='campo-buscador'>Título:&nbsp;</div>
-				<div class='contenedor-caja-buscador-1'>
-					<input type='text' class='caja-buscador-1' size='30' name='title' id='title' value=\"$tit\" onchange='xajax_registerTitulo(this.value)'>
-				</div>
-				<div style='clear:both'></div>
-				<div class='campo-buscador'>Resumen:&nbsp;</div>
-				<div class='contenedor-caja-buscador-1'>
-					<textarea class='caja-buscador-1' size='30' name='abstrac' id='abstrac' onchange='xajax_registerResumen(this.value)'>
-					$abstract
-					</textarea>
-				</div>
-				<div style='clear:both'></div>
-				<div class='campo-buscador'>Enlace:&nbsp;</div>
-				<div class='contenedor-caja-buscador-1'>
-					<input type='text' class='caja-buscador-1' size='30' name='link' id='link' value=\"$link\" onchange='xajax_registerLink(this.value)'>
-				</div>
-				<div style='clear:both'></div>
-
-		    </form>
-		    <div id='titres_mensaje'></di>
-		";
-
-	        //$respuesta->alert(print_r($_SESSION, true));
-
-
-		return $html;
-	}
 
 	function iniTitulo_Presentado($divTitulo){
 	    $titulo="T&iacute;tulo / Presentado por";

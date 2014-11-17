@@ -333,75 +333,6 @@ Funcion que muestra un combo
 
 
 
-	function registerReference($referencia_id,$reference_description){
-	    $respuesta = new xajaxResponse();
-
-if(isset($_SESSION["edit"])){
-    $recuperar=$_SESSION["edit"];
-}
-elseif(isset($_SESSION["tmp"])){
-    $recuperar=$_SESSION["tmp"];
-}
-
-	    if($referencia_id==0){
-	        $respuesta->alert("Necesita seleccionar una referencia");
-                $recuperar["idcategoriaEvento"]=0;
-                $recuperar["categoriaEvento_description"]="";
-
-	    }
-	    else{
-	        if(isset($_SESSION["editar"])){
-	            if($_SESSION["editar"]==1){
-	                $_SESSION["edit"]["idreference"]=$referencia_id;
-                        $reference_description=addslashes($reference_description);
-	                $_SESSION["edit"]["reference_description"]=$reference_description;
-	                }
-	        }
-	        else{
-	                $_SESSION["tmp"]["idreference"]=$referencia_id;
-                        $reference_description=addslashes($reference_description);
-	                $_SESSION["tmp"]["reference_description"]=$reference_description;
-	        }
-
-                //$respuesta->alert(print_r($_SESSION["tmp"], true));
-		}
-
-
-	    return $respuesta;
-	}
-
-
-
-
-	function registerTitRes($form){
-	    $respuesta = new xajaxResponse();
-
-
-	    $title=addslashes($form["title"]);
-	    $abstract=addslashes($form["abstrac"]);
-
-	    if($title==""){
-	        $respuesta->alert("Ingrese Título");
-	    }
-	    elseif($abstract==""){
-	        $respuesta->alert("Ingrese Resumen");
-	    }
-	    else{
-	        if(isset($_SESSION["edit"])){
-	            $_SESSION["edit"]["titulo"]=$title;
-	            $_SESSION["edit"]["resumen"]=$abstract;
-	        }
-	        else{
-	            $_SESSION["tmp"]["titulo"]=$title;
-	            $_SESSION["tmp"]["resumen"]=$abstract;
-	        }
-	        $respuesta->alert("Título y Resumen guardados correctamente");
-	    }
-
-            //$respuesta->alert(print_r($_SESSION["edit"]["titulo"], true));
-	    return $respuesta;
-	}
-
 	function registerTipoPonencia($tipoPonencia_id,$tipoPonencia_txt){
 	    $respuesta = new xajaxResponse();
 
@@ -895,42 +826,6 @@ elseif(isset($_SESSION["tmp"])){
 		}
 
 		return $respuesta;
-	}
-
-
-	function registraReferenciaResult($referencia="",$abrev=""){
-    	$result=registraReferenciaSQL($referencia,$abrev);
-    	return $result;
-	}
-
-	function registraReferenciaShow($referencia="",$abrev=""){
-	    $respuesta = new xajaxResponse();
-	    $result=registraReferenciaResult($referencia,$abrev);
-	    $idreferenceultimo=$result["idreferenceultimo"];
-	    $referenceultimo_txt=$result["reference_description_ultimo"];
-	    $detalleReferenceultimo_txt=$result["reference_description_ultimo"];
-
-	    $cadena="xajax_comboReferenciaShow($idreferenceultimo,1)";
-	    $respuesta->script($cadena);
-
-	        if(isset($_SESSION["editar"])){
-	            if($_SESSION["editar"]==1){
-	                $_SESSION["edit"]["idreference"]=$idreferenceultimo;
-	                $_SESSION["edit"]["reference_description"]=$referenceultimo_txt;
-	                $_SESSION["edit"]["reference_details"]=$detalleReferenceultimo_txt;
-	            }
-	        }
-	        else{
-	            if($_SESSION["tmp"]){
-	                $_SESSION["tmp"]["idreference"]=$referencia_id;
-	                $_SESSION["tmp"]["reference_description"]=$referenceultimo_txt;
-	                $_SESSION["tmp"]["reference_details"]=$detalleReferenceultimo_txt;
-
-	            }
-	        }
-
-	    $respuesta->assign("divNuevaRefe", "innerHTML", "");
-	    return $respuesta;
 	}
 
 

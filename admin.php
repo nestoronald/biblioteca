@@ -19,13 +19,14 @@
 	require("indexSearch.php");
 
 	//Ejecutamos el modelo
-	require("adminModel.php");
+    require("adminModel.php");
+
 
 	//include ("graficos/FusionCharts.php");
 	//include("graficos/DBConn1.php");
 
-	if(isset($_GET["idarea"])){
-		$idarea=$_GET["idarea"];
+	if(isset($_GET["about"])){
+
 	}
 	else{
 		$idarea=0;
@@ -41,10 +42,6 @@
 	************************************************************/
 	function inicio(){
 		$respuesta = new xajaxResponse();
-                    /*
-	            $iduser=$_SESSION["idusers"];
-                    $respuesta->alert($iduser);
-                    */
         $_SESSION["origin"]="back";
         $sessionidarea="";
 		if(isset($_SESSION["admin"])){
@@ -67,35 +64,30 @@
 		    	$cadena="xajax_formLoginShow();";
 		    	$respuesta->script($cadena);
 
-                        $respuesta->script("xajax_crea_form('recuperar');");
-                        $enlace='<a id="recuparar-clave" href="#" class="blanco" >Recuperar Clave<img src="img/iconos/candado_llave_24.png"></img></a>';
-                        $respuesta->assign("menu_d", "innerHTML","$enlace");
+                $respuesta->script("xajax_crea_form('recuperar');");
+                $enlace='<a id="recuparar-clave" href="#" class="blanco" >Recuperar Clave<img src="img/iconos/candado_llave_24.png"></img></a>';
+                $respuesta->assign("menu_d", "innerHTML","$enlace");
 
 		    	$respuesta->assign("subcontent1", "style.display","none");
 		    	$respuesta->assign("loginform", "style.display","block");
 
 
-                        $html='<table><tr><td style="text-align: center;">';
-                        $html.='<img src="img/login.jpg" />';
-                        $html.='</td></tr></table>';
+                $html='<table><tr><td style="text-align: center;">';
+                $html.='<img src="img/login.jpg" />';
+                $html.='</td></tr></table>';
 
-                        $respuesta->assign("imghome", "innerHTML", $html);
+                $respuesta->assign("imghome", "innerHTML", $html);
 
 			}
 		}
 		else{
 			$cadena="xajax_formLoginShow();";
-
-                        $respuesta->script("xajax_crea_form('recuperar');");
-                        $enlace='<a id="recuparar-clave" href="#" class="blanco" >Recuperar Clave<img src="img/iconos/candado_llave_24.png"></img></a>';
-                        $respuesta->assign("menu_d", "innerHTML","$enlace");
-
+            $respuesta->script("xajax_crea_form('recuperar');");
+            $enlace='<a id="recuparar-clave" href="#" class="blanco" >Recuperar Clave<img src="img/iconos/candado_llave_24.png"></img></a>';
+            $respuesta->assign("menu_d", "innerHTML","$enlace");
             $respuesta->script($cadena);
             $respuesta->assign("subcontent1", "style.display","none");
             $respuesta->assign("loginform", "style.display","block");
-
-
-
 
 		}
 		//tab title tooltip
@@ -439,7 +431,7 @@
               $respuesta->assign("divformlogin", "style.display", "none");
               $medu_rigth.='<li class="fright"><a href="Instructivo_uso_Administrador.pdf" target="__blank"><b> ? </b> </a></li>';
               $medu_rigth.='<li class="fright"><a href="#" onclick="xajax_cerrarSesion(); return false">Cerrar sesión</a></li>';
-              $medu_rigth.='<li class="fright"><a href="miperfil.php">'.$_SESSION["admin"].'</a></li>';
+              $medu_rigth.='<li class="fright"><a href="admin.php?about=admin">'.$_SESSION["admin"].'</a></li>';
 
               $html='<table><tr><td style="text-align: center;">';
               $html.='<img src="img/biblioteca.png" />';
@@ -1191,8 +1183,6 @@
 
 
     	//###############################################################
-		//PARA EL AUTOR
-	    //$objResponse->script("xajax_iniAuthorShow('titulo2')");
 
     	$objResponse->assign("titulo2","innerHTML","<a class='tab-title' href='#' onclick=\"xajax_displaydiv('author','titulo2'); return false;\" rel='tooltip' data-toggle='tooltip' title='Gestione Autores aqui!' >Autor Personal</a>");
     	$objResponse->assign("titulo2_A","innerHTML","<a class='tab-title' href='#' onclick=\"xajax_displaydiv('author_inst','titulo2_A'); return false;\" rel='tooltip' data-toggle='tooltip' title='Gestione Autores aqui!' >Autor Institucional</a>");
@@ -1356,7 +1346,7 @@
 		return $objResponse;
 
 	}
-      function generate_dictionary($type="", $array=array()){
+    function generate_dictionary($type="", $array=array()){
 
         $dictionary = "[";
         if ($type=="date") {
@@ -1372,8 +1362,8 @@
         $dictionary = substr($dictionary, 0,-1);
         $dictionary .= "]";
         return $dictionary;
-      }
-      function tags_temas(){
+    }
+    function tags_temas(){
         $temas = temas_query();
         $html = "";
         $theme = array(0 => "-");
@@ -2869,7 +2859,7 @@
     		$objResponse->assign("divNewAuthor","innerHTML",$html);
     		return $objResponse;
 
-    	}
+    }
     function crea_form($accion){
         $respuesta = new xajaxResponse();
 
@@ -3189,8 +3179,6 @@
         return $respuesta;
     }
 
-
-
     function carga_archivo($img_portada=""){
         $respuesta = new xajaxResponse();
         if(isset($_SESSION["edit"])){
@@ -3445,7 +3433,7 @@
 	Registrar las Funciones
 	*******************************************************************/
 
-	$xajax->registerFunction('newRegisterBiblio');
+    $xajax->registerFunction('newRegisterBiblio');
 	$xajax->registerFunction('registerSubAreas');
 	$xajax->registerFunction('menuAAShow');
 	$xajax->registerFunction('formCategoryShow');
@@ -3454,10 +3442,10 @@
 	$xajax->registerFunction('muestraFormGrafico');
 
 	/*******Seccion Asuntos Academicos**********/
-        $xajax->registerFunction('registerYearPub');
-        $xajax->registerFunction('registerMonthPub');
-        $xajax->registerFunction('registerDayPub');
-        $xajax->registerFunction('registerDateIng');
+    $xajax->registerFunction('registerYearPub');
+    $xajax->registerFunction('registerMonthPub');
+    $xajax->registerFunction('registerDayPub');
+    $xajax->registerFunction('registerDateIng');
 
 	$xajax->registerFunction('registerAreaAdministrativa');
 	$xajax->registerFunction('iniAreasAdministrativasShow');
@@ -3498,7 +3486,6 @@
 	$xajax->registerFunction('registerTipoPonencia');
 	$xajax->registerFunction('comboCategoriaEvento');
 	$xajax->registerFunction('comboTipoPonencia');
-	$xajax->registerFunction('iniTitulo_Tipo_Presentado');
 	$xajax->registerFunction('formPonenciasShow');
 	/*******Seccion Ponencias********************/
 
@@ -3515,7 +3502,6 @@
 
 	$xajax->registerFunction('comboTipoTesisShow');
 	$xajax->registerFunction('comboTipoFechasShow');
-	$xajax->registerFunction('iniTitulo_Tipo_Presentado');
 	$xajax->registerFunction('registerLugarPais');
 	$xajax->registerFunction('registerEventoTipo');
     $xajax->registerFunction('registerClaseEvento');
@@ -3544,35 +3530,21 @@
 	$xajax->registerFunction('iniOtrasAreasShow');
 	$xajax->registerFunction('iniAreaShow');
 
-
-
-
 	$xajax->registerFunction('iniArchivoShow');
 	$xajax->registerFunction('guardarSesiones');
 
 	/*Registrar las sesiones*/
-	$xajax->registerFunction('registerTitRes');
-	$xajax->registerFunction('registerTitTipo');
-	$xajax->registerFunction('registerReference');
 
-	$xajax->registerFunction('iniAuthorShow');
 	$xajax->registerFunction('auxAuthorPriShow');
 	$xajax->registerFunction('auxAuthorSecShow');
 
 	// $xajax->registerFunction('searchAuthorPriResult');
 	$xajax->registerFunction('searchAuthorPriShow');
-
-	$xajax->registerFunction('iniTitulo_Resumen');
-	$xajax->registerFunction('iniTitulo_ResumenShow');
 	$xajax->registerFunction('iniAuthorPriShow');
 	$xajax->registerFunction('iniAuthorSecShow');
 	$xajax->registerFunction('iniAreaShow');
 
 	$xajax->registerFunction('paginatorShow');
-
-	$xajax->registerFunction('registraReferenciaShow');
-	$xajax->registerFunction('registraReferenciaResult');
-
 	$xajax->registerFunction('formAuthorShow');
 
 	$xajax->registerFunction('registraAuthorResult');
@@ -3601,34 +3573,17 @@
 	$xajax->registerFunction('searchAuthorSecResult');
 	/*************Registrar Funciones de Autores****************/
 
-
-	$xajax->registerFunction('busquedaReferenciaShow');
-
-	$xajax->registerFunction('formSubcategoryShow');
-	$xajax->registerFunction('formPublicacionShow');
-
-	$xajax->registerFunction('comboReferenciaShow');
-	$xajax->registerFunction('comboEstadoPublicacionShow');
-	$xajax->registerFunction('comboTipoPublicacionShow');
-
 	$xajax->registerFunction('menuShow');
-        $xajax->registerFunction('menuGSShow');
-
 	$xajax->registerFunction('formLoginShow');
 	$xajax->registerFunction('verificaUsuarioShow');
 
-	$xajax->registerFunction('cargaScriptDates');
-        $xajax->registerFunction('cargaScriptReferencia');
-        $xajax->registerFunction('obtenerIdDescripcion');
-        $xajax->registerFunction('cargaScriptMostrarAutores');
-        $xajax->registerFunction('cargaScriptOcultarAutores');
-        $xajax->registerFunction('mostrarBusquedaAutores');
-        $xajax->registerFunction('ocultarBusquedaAutores');
-        $xajax->registerFunction('verFile');
-        $xajax->registerFunction('cambiarClave');
-        $xajax->registerFunction('crea_form');
-        $xajax->registerFunction('recuperarClave');
-        $xajax->registerFunction('sendemail');
+    $xajax->registerFunction('mostrarBusquedaAutores');
+    $xajax->registerFunction('ocultarBusquedaAutores');
+    $xajax->registerFunction('verFile');
+    $xajax->registerFunction('cambiarClave');
+    $xajax->registerFunction('crea_form');
+    $xajax->registerFunction('recuperarClave');
+    $xajax->registerFunction('sendemail');
 
     $xajax->registerFunction('registerfbook');
     $xajax->registerFunction('registerISBN');
