@@ -1,26 +1,6 @@
 <?php
 
-
-	function iniArchivoShow(){
-
-                $html='<div id="carga_archivo">files</div>';
-
-                if(isset($_SESSION["edit"])){
-                    $sesion_iddata=$_SESSION["edit"]["idbook"];
-                    $html.="<div class='blue' id='linkUpload' name='linkUpload'> &nbsp; &nbsp; &nbsp; ".downloadLink($sesion_iddata,"admin","form")."</div>";
-
-                    $link=downloadLink($sesion_iddata,"admin","form");
-
-                }
-                else{
-                    $link="";
-                    //$html.= "<br /><br /><a id='linkSubir' name='linkSubir' href='#upload' onclick='xajax_verFile()'><b>Subir Archivo</b></a> ";
-                }
-		return array($html,$link);
-	}
-
-
-	function iniAuthorPriShow($typeAuthor){
+function iniAuthorPriShow($typeAuthor){
 	    $titulo="AUTOR PRINCIPAL";
 
 		$typeAuthorHTML = $typeAuthor=="AuthorPer"? "<div id='rq_authorPRI'></div>":"<div id='rq_authorPRI_02'></div>";
@@ -71,7 +51,7 @@
 		</table>';
 
 		return $html;
-	}
+}
 
 function iniAuthorSecShow(){
     $titulo="AUTOR SECUNDARIO";
@@ -111,140 +91,6 @@ function iniAuthorSecShow(){
     return $respuesta;
 }
 
-
-
-
-function iniTitulo($divTitulo){
-
-    $subcategory=$_SESSION["subcategory"];
-    if($subcategory=="ponencia"){
-        $titulo="T&Iacute;TULO / TIPO";
-    }
-    else{
-        $titulo="T&iacute;tulo";
-    }
-
-	$respuesta = new xajaxResponse();
-
-        if(isset($_SESSION["edit"])){
-            $recuperar=$_SESSION["edit"];
-        }
-        elseif(isset($_SESSION["tmp"])){
-            $recuperar=$_SESSION["tmp"];
-        }
-
-        if(isset($recuperar["titulo"])){
-            $tit=$recuperar["titulo"];
-        }
-        else{
-            $tit="";
-        }
-
-        if(isset($recuperar["resumen"])){
-                $abstract=$recuperar["resumen"];
-        }
-        else{
-                $abstract="";
-        }
-
-		$html="<form name='tit_res' id='tit_res' >
-				<div class='campo-buscador'>Título:&nbsp;</div>
-				<div class='contenedor-caja-buscador-1'>
-					<input type='text' class='caja-buscador-1' size='30' name='title' id='title' value='$tit' onchange='xajax_registerTitulo(this.value)'>
-				</div>
-				<div style='clear:both'></div>";
-
-	    if(isset($_SESSION["subcategory"])){
-	    	$subcategory=$_SESSION["subcategory"];
-	    }
-	    else{
-	    	$subcategory="";
-	    }
-
-            switch($subcategory){
-                case "articulos_indexados":
-                case "tesis":
-                case "otras_publicaciones":
-                $html.="<div class='campo-buscador'>Resumen:&nbsp;</div>
-				<div class='contenedor-caja-buscador-1'>
-					<textarea class='caja-buscador-1' size='30' name='abstrac' id='abstrac' onchange='xajax_registerResumen(this.value)'>
-					$abstract
-					</textarea>
-				</div>
-				<div style='clear:both'></div>
-		    </form>
-		    <div id='titres_mensaje'></di>";
-
-                    break;
-            }
-
-
-
-        $respuesta->Assign("titulo","innerHTML",$html);
-
-	$respuesta->Assign($divTitulo,"innerHTML","<a href=#1 onclick=\"xajax_displaydiv('titulo','$divTitulo'); return false;\">$titulo</a>");
-	return $respuesta;
-}
-
-
-
-	function iniTitulo_Presentado($divTitulo){
-	    $titulo="T&iacute;tulo / Presentado por";
-		$respuesta = new xajaxResponse();
-
-		if(isset($_SESSION["edit"])){
-		    $recuperar=$_SESSION["edit"];
-		}
-		elseif(isset($_SESSION["tmp"])){
-		    $recuperar=$_SESSION["tmp"];
-		}
-
-        if(isset($recuperar["titulo"])){
-            $tit=$recuperar["titulo"];
-        }
-        else{
-            $tit="";
-        }
-
-        if(isset($recuperar["prePorNombre"])){
-            $prePorNombre=$recuperar["prePorNombre"];
-        }
-        else{
-            $prePorNombre="";
-        }
-
-        if(isset($recuperar["prePorApellido"])){
-            $prePorApellido=$recuperar["prePorApellido"];
-        }
-        else{
-            $prePorApellido="";
-        }
-
-
-		$html="<form name='form_tit_prepor' id='form_tit_prepor' onSubmit='xajax_registerTitPrePor(xajax.getFormValues(\"form_tit_prepor\")); return false;'>
-			  <div class='campo-buscador'><div>Título :</div></div>
-			  <div class='contenedor-caja-buscador-1'>
-			  	<input type='text' size='30' onchange='xajax_registerTitulo(this.value); return false;' value='$tit' id='title' name='title' class='caja-buscador-1'>
-				</div>
-				<div style='clear: both;'></div>";
-
-		$html.="<div class='txt-azul'>Presentado Por:</div>";
-		$html.="<div class='campo-buscador'>Nombre:</div>";
-		$html.="<div class='contenedor-caja-buscador-1'><input type='text' maxlength='1' onchange='xajax_registerPrePorNombre(this.value); return false;' id='prePorNombre' name='prePorNombre' value='$prePorNombre' class='caja-buscador-2' /> <small>solo la primera letra</small></div>";
-		$html.="<div style='clear: both;'></div>";
-		$html.="<div class='campo-buscador'>Apellido:</div>";
-		$html.="<div class='contenedor-caja-buscador-1'><input type='text' onchange='xajax_registerPrePorApellido(this.value); return false;' id='prePorApellido' name='prePorApellido' value='$prePorApellido' class='caja-buscador-2' /></div>";
-		$html.="<div style='clear: both;'></div>";
-		$html.="</form>";
-
-	    $respuesta->Assign("titulo_presentado","innerHTML",$html);
-
-		$respuesta->Assign($divTitulo,"innerHTML","<a href=#1 onclick=\"xajax_displaydiv('titulo_presentado','$divTitulo'); return false;\">$titulo</a>");
-		return $respuesta;
-	}
-
-
-
 	function iniAreaResult($type,$idarea){
 	    $resultSql= searchThemeSQL($type,$idarea);
 	return $resultSql;
@@ -260,101 +106,6 @@ function iniTitulo($divTitulo){
 	return $resultSql;
 	}
 
-	function iniAreasAdministrativasShow($idarea){
-
-		$respuesta = new xajaxResponse();
-
-		if(isset($_SESSION["edit"])){
-		    $recuperar=$_SESSION["edit"];
-		}
-		elseif(isset($_SESSION["tmp"])){
-		    $recuperar=$_SESSION["tmp"];
-		 }
-
-		        $subcategory=$_SESSION["subcategory"];
-
-		$divTitulo="";
-		$titulo="";
-		$divContenido="";
-
-		switch ($subcategory) {
-		    case "charlas_internas":
-		    $divTitulo="titAreasAdministrativas";
-		    $divContenido="cont_areasAdministrativas";
-		    $titulo="&Aacute;reas de Administrativas";
-		    break;
-		}
-
-	    $result=iniAreasAdministrativasResult($idarea);
-
-	    $id=$result["idareaAdministrativa"];
-	    $desc=$result["areaAdministrativa_description"];
-	    $html="";
-	    if($result["Error"]==0){
-
-	        if($result["Count"]>0){
-	            for($i=0;$i<count($id);$i++){
-	                $key = $id[$i];
-	                if(isset($recuperar["areasAdministrativas"][$key])){
-	                    $html.="<p><input type=checkbox checked onclick=\"xajax_registerAreaAdministrativa('".$id[$i]."')\"  value=".$id[$i]."  />&nbsp;".$desc[$i]."</p>";
-	                }
-	                else{
-	                    $html.="<p><input type=checkbox  onclick=\"xajax_registerAreaAdministrativa('".$id[$i]."')\"  value=".$id[$i]."  />&nbsp;".$desc[$i]."</p>";
-	                }
-	            }
-	        }
-	    }
-	    else{
-	        $html="Error SQL";
-	    }
-	    $respuesta->Assign("$divContenido","innerHTML",$html);
-	    $respuesta->Assign("$divTitulo","innerHTML",$titulo);
-	    return $respuesta;
-	}
-
-
-	function iniInstitucionExterna($tit_div,$cont_div){
-
-		$respuesta = new xajaxResponse();
-		$subcategory=$_SESSION["subcategory"];
-
-		switch($subcategory){
-		    case "charlas_internas":
-		        $fecha_txt="Fecha de Presentaci&oacute;n :";
-		        break;
-		}
-
-		if(isset($_SESSION["edit"])){
-			$recuperar=$_SESSION["edit"];
-		}
-		elseif(isset($_SESSION["tmp"])){
-			$recuperar=$_SESSION["tmp"];
-		}
-
-		if(isset($recuperar["inst_ext"])){
-			$inst_ext=$recuperar["inst_ext"];
-		}
-		else{
-			$inst_ext="";
-		}
-
-		$html ="<form name='form_inst_ext' id='form_inst_ext' >";
-		$html.="<input type='text' class='field' onchange='xajax_registerInst_Ext(this.value); return false;' value='$inst_ext' name='inst_ext' id='inst_ext'>";
-		//$html.="<input class='button' type='submit' value='Guardar'  />";
-		$html.="</form>";
-		$respuesta->Assign("$cont_div","innerHTML",$html);
-		$respuesta->Assign("$tit_div","innerHTML","Instituci&oacute;n Externa");
-
-	    return $respuesta;
-	}
-
-
-/* --n function iniOtrosTemasShow(){
-	$respuesta = new xajaxResponse();
-    $titulo="Asociar a otros temas (debe de haber seleccionado por lo menos un área)";
-	$respuesta->Assign("titOtrosTemas","innerHTML",$titulo);
-	return $respuesta;
-}*/
 	function iniThemes_Book(){
 		$objResponse = new xajaxResponse();
 		$result = SelectThemeBoook();

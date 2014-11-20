@@ -6,6 +6,7 @@
         require ('../class/ClassPaginator.php');
 	require ('../class/dbconnect.php');
 	require ('../class/xajax_core/xajax.inc.php');
+    require ('../class/smarty/Smarty.class.php');
 	// require ('../class/RegisterInput.php');
 	$xajax=new xajax();
         //$xajax->configure("debug", true);
@@ -4082,6 +4083,59 @@
 
 
 	//Mostramos la pagina
-	require("adminView.php");
+	// require("adminView.php");
+    $smarty = new Smarty;
+    $smarty->assign("xajax",$xajax->printJavascript());
+    // $smarty->display('admin.tpl');
+    if (isset($_SESSION["admin"])) {
+
+        if(isset($_GET["about"]) ){
+            if ($_GET["about"]=="admin") {
+                $smarty->display('tpl/about.tpl');
+            }
+            else{
+                $smarty->display('admin.tpl');
+            }
+
+        }
+        // search
+        elseif(isset($_GET["search"])){
+            if ($_GET["search"]=="category") {
+                $smarty->display('tpl/category.tpl');
+                // $smarty->assign("searchCategory", searchCategory());
+            }
+            else{
+                $smarty->display('admin.tpl');
+            }
+
+        }
+        //reservas
+        elseif(isset($_GET["loan"])){
+            if ($_GET["loan"]=="list") {
+                $smarty->display('tpl/loan.tpl');
+                // $smarty->assign("searchCategory", searchCategory());
+            }
+            else{
+                $smarty->display('admin.tpl');
+            }
+
+        }
+        elseif(isset($_GET["newlibrary"])){
+            if ($_GET["newlibrary"]=="list") {
+                $smarty->display('tpl/newlibrary.tpl');
+                // $smarty->assign("searchCategory", searchCategory());
+            }
+            else{
+                $smarty->display('admin.tpl');
+            }
+
+        }
+        else{
+            $smarty->display('admin.tpl');
+        }
+    }
+    else{
+        $smarty->display('admin.tpl');
+    }
 
 ?>

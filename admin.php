@@ -6,6 +6,7 @@
     require ('../class/ClassPaginator.php');
 	require ('../class/dbconnect.php');
 	require ('../class/xajax_core/xajax.inc.php');
+    require ('../class/smarty/Smarty.class.php');
 	// require ('../class/RegisterInput.php');
 	$xajax=new xajax();
         //$xajax->configure("debug", true);
@@ -17,25 +18,13 @@
 	// require("adminRegister.php");
 	require("adminStatistics.php");
 	require("indexSearch.php");
-
-	//Ejecutamos el modelo
     require("adminModel.php");
-
 
 	//include ("graficos/FusionCharts.php");
 	//include("graficos/DBConn1.php");
 
-	if(isset($_GET["about"])){
-
-	}
-	else{
-		$idarea=0;
-	}
-
 	session_name("bib");
 	session_start();
-
-
 
 	/************************************************************
 	Función que Verfica el Login
@@ -104,7 +93,6 @@
 		return $respuesta;
 	}
 
-
 	function formLoginShow(){
 	    $respuesta = new xajaxResponse();
 
@@ -126,7 +114,6 @@
 	    $respuesta->Assign("divformlogin","innerHTML",$form);
 	    return $respuesta;
 	}
-
 
 	/************************************************************
 	Función que Cierra la Sesión
@@ -196,7 +183,6 @@
                 $enlace='<a id="new-clave" href="#" class="blanco" >Cambiar Clave<img src="img/iconos/candado_llave_24.png"></img></a>';
                 $respuesta->assign("menu_d", "innerHTML","$enlace");
 
-				//$respuesta->script("xajax_muestraFormGrafico()");
 				$respuesta->Assign("subcontent1","style.display","block");
 				//$respuesta->Assign("loginform","style.display","none");
                 $respuesta->Assign("divformlogin","innerHTML","&nbsp");
@@ -208,7 +194,6 @@
 
         return $respuesta;
     }
-
 
     function recuperarClaveResult($user,$correo){
 
@@ -408,7 +393,6 @@
 	    return $objResponse;
 	}
 
-
 	/******************************************
 	Función que muestra un Menú en el Template
 	*******************************************/
@@ -421,10 +405,10 @@
             /*Menú de la nueva plantilla 2012*/
             //switch($_SESSION["users_type"]){
             //case 0: //el segundo parametro es el currentpage al ser cero utiliza el valor del formulario
-              $menu.='<li><a id="new_register" href="#nuevo-registro" title="Nuevo Registro"> Nuevo </a></li>';
-              $menu.="<li><a href='#Catalogo-busqueda' onclick='xajax_searchCategory(); return false;' > Consultas</a></li>";
-              $menu.="<li><a href='#Lista-reserva' onclick='xajax_ListReserva(); return false;' >Reservas</a></li>";
-              $form["demo"]="12";
+              $menu.='<li><a id="new_register" href="?newlibrary=list" title="Nuevo Registro"> Nuevo </a></li>';
+              $menu.="<li><a href='?search=category'  > Consultas</a></li>";
+              $menu.="<li><a href='?loan=list' >Reservas</a></li>";
+              // $form["demo"]="12";
                     // $menu.="<li><a href='#Lista-registros' onclick='xajax_auxSearchShow(20,1,\"$form\"); return false;' ><img width='12px;' style='vertical-align:middle;' src='img/iconos/search_16.png' /> Lista de registros</a></li>";
               $menu.="<li><a href='#autores' onclick='xajax_auxAuthorShow(5000,1,\"$form\"); return false;' > Autores</a></li>";
                 //}
@@ -440,11 +424,11 @@
 
               $respuesta->assign("menu", "innerHTML", $menu);
     		  $respuesta->assign("menu_rigth", "innerHTML", $medu_rigth);
-    		  $respuesta->script("
-    					$('#new_register').click(function(){
-    						xajax_formCategoryShow(2); return false;
-    					})
-    			");
+    		 //  $respuesta->script("
+    			// 		$('#new_register').click(function(){
+    			// 			xajax_formCategoryShow(2); return false;
+    			// 		})
+    			// ");
     		  $respuesta->script('
                         $(function(){
 
@@ -465,41 +449,9 @@
 		return $respuesta;
 	}
 
-
 	function subcategoryResult($category=0,$idarea=0){
 		$resultSql= searchSubCategorySQL($category,"","",$idarea);
 		return $resultSql;
-	}
-
-	/******************************************
-	Función que muestra un Menú en el Template
-	*******************************************/
-	function menuAAShow($idarea=0){
-		$respuesta= new xajaxResponse();
-
-		$result=subcategoryResult(3,$idarea);
-		$count=$result["Count"];
-
-		$menu="<div><h3  class='txt-rojo'>Nuevo Ingreso:</h3></div>";
-
-		for($i=0;$i<$count;$i++){
-			$desc = ucfirst($result["subcategory_description"][$i]);
-			$id = $result["idsubcategory"][$i];
-			//$idfrom=$_SESSION["idfrom"];
-            $idfrom=isset($_SESSION["idfrom"])?$_SESSION["idfrom"]:0;
-			$idarea=isset($_SESSION["idarea"])?$_SESSION["idarea"]:0;
-	        $menu.="<div class='submenu'>»<a href='#' class='negro' onClick='xajax_formCategoryShow(3,$id); return false'>$desc</a></div>";
-		}
-
-                $menu.="<div><h3 class='txt-rojo'>Consultas :</h3>
-                        <div class='submenu'>»<a class='negro' href='#'  onClick='xajax_formConsultaShow(\"$idfrom\",\"admin\",\"$idarea\"); return false'>B&uacute;squeda</a></div>
-                        <div class='submenu'>»<a id='botonshow' class='negro' href='#'  >Estad&iacute;sticas   </a></div>
-                        <div class='left-box'><h3 class='txt-rojo'>Salir :</h3></div>
-                        <div class='submenu'>»<a href='#' class='negro' onClick='xajax_cerrarSesion(); return false'>Cerrar sesi&oacute;n</a></div>";
-		$respuesta->assign("menuLateral", "innerHTML", $menu);
-
-		$respuesta->assign("menuLateral", "innerHTML", $menu);
-		return $respuesta;
 	}
 
 	/******************************************
@@ -1199,8 +1151,6 @@
 		$link="<a onclick=\"xajax_displaydiv('area_tema','titulo5'); return false;\" class='tab-title' href='#' rel='tooltip' title='Temas Relacionados'>Temas Relacionados</a>";
 		$objResponse->assign('titulo5',"innerHTML",$link);
 
-
-        // list($htmlArchivo,$link)=iniArchivoShow();
         $objResponse->Assign('titulo7',"innerHTML","<a class='tab-title' href='#1' onclick=\"xajax_displaydiv('archivo','titulo7'); return false;\" rel='tooltip' title='Imagen de Portada'>Imagen</a>");
         // $objResponse->alert(print_r($htmlArchivo, true));
     	// $objResponse->Assign("archivo","innerHTML",$htmlArchivo);
@@ -1267,39 +1217,39 @@
                 				  	$(this).removeClass('focus');
                 				  });
                 				  $('.accordion').collapse();
-                				  $('#searchbox').keydown(function(event) {
-								   if(event.shiftKey) {
-								        event.preventDefault();
-								   }
-								   if (event.keyCode == 46 || event.keyCode == 8) {
-								   }
-								   else {
-								        if (event.keyCode < 95) {
-								          if (event.keyCode < 48 || event.keyCode > 57) {
-								                event.preventDefault();
-								          }
-								        }
-								        else {
-								              if (event.keyCode < 96 || event.keyCode > 105) {
-								                  event.preventDefault();
-								              }
-								        }
-								      }
-								   });
-                					$('#searchbox').bind('keypress', function(e) {
-                						var val_text = $(this).val();
+         //        				  $('#searchbox').keydown(function(event) {
+								 //   if(event.shiftKey) {
+								 //        event.preventDefault();
+								 //   }
+								 //   if (event.keyCode == 46 || event.keyCode == 8) {
+								 //   }
+								 //   else {
+								 //        if (event.keyCode < 95) {
+								 //          if (event.keyCode < 48 || event.keyCode > 57) {
+								 //                event.preventDefault();
+								 //          }
+								 //        }
+								 //        else {
+								 //              if (event.keyCode < 96 || event.keyCode > 105) {
+								 //                  event.preventDefault();
+								 //              }
+								 //        }
+								 //      }
+								 //   });
+         //        					$('#searchbox').bind('keypress', function(e) {
+         //        						var val_text = $(this).val();
 
-										if(e.keyCode==13){
-											if (val_text>0 && val_text<".$result_book["Count"].") {
-                								$('#b_navigation option[value='+val_text+']').attr('selected',true);
-												xajax_editBook(val_text,1); return false;
-                							}
-                							else{
-											 alert('El número ingresado está fuera del rango de registros');
-											 $(this).val('').focus();
-											}
-										}
-									});
+									// 	if(e.keyCode==13){
+									// 		if (val_text>0 && val_text<".$result_book["Count"].") {
+         //        								$('#b_navigation option[value='+val_text+']').attr('selected',true);
+									// 			xajax_editBook(val_text,1); return false;
+         //        							}
+         //        							else{
+									// 		 alert('El número ingresado está fuera del rango de registros');
+									// 		 $(this).val('').focus();
+									// 		}
+									// 	}
+									// });
                 					$( '#FxIng' ).datepicker({
 								      showOn: 'button',
 								      buttonImage: './img/calendar.gif',
@@ -1825,6 +1775,7 @@
 		return $respuesta;
 
 	}
+
 	function optionEdition($id,$idinput,$label,$labelSec){
 		// $recuperar = (isset($_SESSION["edit"])?$_SESSION["edit"]:"");
 		if (isset($_SESSION["edit"])) {
@@ -2844,6 +2795,7 @@
     	');
     	return $objResponse;
     		}
+
     function saveAuthor($form,$catAuthor,$action){
     		$objResponse= new xajaxResponse();
     		$result = registraAuthorSQL($form);
@@ -2860,6 +2812,7 @@
     		return $objResponse;
 
     }
+
     function crea_form($accion){
         $respuesta = new xajaxResponse();
 
@@ -3317,7 +3270,6 @@
         return $respuesta;
     }
 
-
     function save_files($namefile){
         $respuesta = new xajaxResponse();
 
@@ -3428,87 +3380,25 @@
 
     }
 
-
 	/*******************************************************************
 	Registrar las Funciones
 	*******************************************************************/
 
     $xajax->registerFunction('newRegisterBiblio');
-	$xajax->registerFunction('registerSubAreas');
-	$xajax->registerFunction('menuAAShow');
 	$xajax->registerFunction('formCategoryShow');
-	$xajax->registerFunction('detalleGraficosEstadisticos');
-	$xajax->registerFunction('graficosEstadisticos');
-	$xajax->registerFunction('muestraFormGrafico');
-
-	/*******Seccion Asuntos Academicos**********/
-    $xajax->registerFunction('registerYearPub');
-    $xajax->registerFunction('registerMonthPub');
-    $xajax->registerFunction('registerDayPub');
-    $xajax->registerFunction('registerDateIng');
-
-	$xajax->registerFunction('registerAreaAdministrativa');
-	$xajax->registerFunction('iniAreasAdministrativasShow');
-	$xajax->registerFunction('registerTitPrePor');
-	$xajax->registerFunction('registerInst_Ext');
-	$xajax->registerFunction('iniInstitucionExterna');
-	$xajax->registerFunction('iniAreasAdministrativasShow');
-	$xajax->registerFunction('iniTitulo_Presentado');
-	$xajax->registerFunction('registerCompendioYear');
-
-	$xajax->registerFunction('comboTipoAsuntosAcademicosShow');
-
-    /*******Seccion Informacion Interna**********/
-
-	$xajax->registerFunction('registerYearQuarter');
-	$xajax->registerFunction('comboYearRegisterShow');
-	$xajax->registerFunction('comboQuarter');
-	$xajax->registerFunction('registerBoletinMagnitud');
-	$xajax->registerFunction('comboMagnitudShow');
-	$xajax->registerFunction('registerRegDepFechas');
-	$xajax->registerFunction('registerTitulo');
-	$xajax->registerFunction('iniTitulo');
-
-	$xajax->registerFunction('comboDepartamentoShow');
-	$xajax->registerFunction('comboRegionShow');
-	$xajax->registerFunction('comboTipoInformacionInternaShow');
-	$xajax->registerFunction('formInformacionInternaShow');
-	/*******Seccion Informacion Interna**********/
-
+	$xajax->registerFunction('registerDateIng');
 
 	/*******Seccion Ponencias********************/
-	$xajax->registerFunction('registerCatEvento');
-	$xajax->registerFunction('registerNomEvento');
-	$xajax->registerFunction('registerLugar');
-	$xajax->registerFunction('registerPais');
-	$xajax->registerFunction('registerPrePorNombre');
-	$xajax->registerFunction('registerPrePorApellido');
-	$xajax->registerFunction('registerTipoPonencia');
-	$xajax->registerFunction('comboCategoriaEvento');
-	$xajax->registerFunction('comboTipoPonencia');
 	$xajax->registerFunction('formPonenciasShow');
-	/*******Seccion Ponencias********************/
 
 	/*******Sección Publicaciones****************/
 
 	$xajax->registerFunction('arrayAuthor');
-
 	$xajax->registerFunction('newPonencia');
-
 	$xajax->registerFunction('displaydiv');
-	$xajax->registerFunction('comboTypeSubcategoryShow');
-
-	//Registramos funciones para formularios y selects
-
-	$xajax->registerFunction('comboTipoTesisShow');
-	$xajax->registerFunction('comboTipoFechasShow');
-	$xajax->registerFunction('registerLugarPais');
-	$xajax->registerFunction('registerEventoTipo');
-    $xajax->registerFunction('registerClaseEvento');
 
 	// Registramos funciones para las fechas, el estado y los permisos
 	// ------------------------------------------------------------------
-	$xajax->registerFunction('iniDateStatusPermission');
 	$xajax->registerFunction('iniDates');
 	$xajax->registerFunction('iniPermission');
 	$xajax->registerFunction('registerPermission');
@@ -3516,22 +3406,6 @@
 	$xajax->registerFunction('registerStatus');
 	$xajax->registerFunction('registerDatePub');
     $xajax->registerFunction('registerYearCompendio');
-
-	// Registramos funciones para areas asociadas y temas
-	// ------------------------------------------------------------------
-
-	$xajax->registerFunction('iniAreaTheme');
-	$xajax->registerFunction('newThemeRegister');
-	$xajax->registerFunction('newThemeInsert');
-	$xajax->registerFunction('newThemeShow');
-	$xajax->registerFunction('otrosTemasShow');
-	$xajax->registerFunction('registerTheme');
-	$xajax->registerFunction('registerArea');
-	$xajax->registerFunction('iniOtrasAreasShow');
-	$xajax->registerFunction('iniAreaShow');
-
-	$xajax->registerFunction('iniArchivoShow');
-	$xajax->registerFunction('guardarSesiones');
 
 	/*Registrar las sesiones*/
 
@@ -3542,7 +3416,6 @@
 	$xajax->registerFunction('searchAuthorPriShow');
 	$xajax->registerFunction('iniAuthorPriShow');
 	$xajax->registerFunction('iniAuthorSecShow');
-	$xajax->registerFunction('iniAreaShow');
 
 	$xajax->registerFunction('paginatorShow');
 	$xajax->registerFunction('formAuthorShow');
@@ -3579,38 +3452,23 @@
 
     $xajax->registerFunction('mostrarBusquedaAutores');
     $xajax->registerFunction('ocultarBusquedaAutores');
-    $xajax->registerFunction('verFile');
     $xajax->registerFunction('cambiarClave');
     $xajax->registerFunction('crea_form');
     $xajax->registerFunction('recuperarClave');
     $xajax->registerFunction('sendemail');
 
-    $xajax->registerFunction('registerfbook');
-    $xajax->registerFunction('registerISBN');
-    $xajax->registerFunction('registerCallNumber');
-    $xajax->registerFunction('registerPublication');
-    $xajax->registerFunction('registerEdition');
-    $xajax->registerFunction('registerSubject');
-    $xajax->registerFunction('registerSumary');
-    $xajax->registerFunction('registerISSN');
-
-    $xajax->registerFunction('click_checked');
     $xajax->registerFunction('carga_archivo');
     $xajax->registerFunction('save_files');
     $xajax->registerFunction('delete_file');
-    $xajax->registerFunction('registerDescription_Physical');
     $xajax->registerFunction('editBook');
     $xajax->registerFunction('DeleteImg') ;
     $xajax->registerFunction('ConfirmDeleteImg');
     $xajax->registerFunction('iniThemes_Book');
     $xajax->registerFunction('ListCampos');
     $xajax->registerFunction('delCampos');
-    $xajax->registerFunction('registerlanguaje');
     $xajax->registerFunction('register_input');
     $xajax->registerFunction('AddInput');
     $xajax->registerFunction('delInput');
-    $xajax->registerFunction('PubLanguaje');
-
     $xajax->registerFunction('auxAuthorShow');
     $xajax->registerFunction('editAuthor');
     $xajax->registerFunction('updateAuthor');
@@ -3623,7 +3481,6 @@
     $xajax->registerFunction('ListReserva');
     $xajax->registerFunction('procesar_reserva');
     $xajax->registerFunction('delete_reserva');
-
     $xajax->registerFunction('cambiar_estado');
     $xajax->registerFunction('show_details_back');
 
@@ -3631,6 +3488,59 @@
 
 
 	//Mostramos la pagina
-	require("adminView.php");
+	//require("adminView.php");
+    $smarty = new Smarty;
+    $smarty->assign("xajax",$xajax->printJavascript());
+    // $smarty->display('admin.tpl');
+    if (isset($_SESSION["admin"])) {
+
+        if(isset($_GET["about"]) ){
+            if ($_GET["about"]=="admin") {
+                $smarty->display('tpl/about.tpl');
+            }
+            else{
+                $smarty->display('admin.tpl');
+            }
+
+        }
+        // search
+        elseif(isset($_GET["search"])){
+            if ($_GET["search"]=="category") {
+                $smarty->display('tpl/category.tpl');
+                // $smarty->assign("searchCategory", searchCategory());
+            }
+            else{
+                $smarty->display('admin.tpl');
+            }
+
+        }
+        //reservas
+        elseif(isset($_GET["loan"])){
+            if ($_GET["loan"]=="list") {
+                $smarty->display('tpl/loan.tpl');
+                // $smarty->assign("searchCategory", searchCategory());
+            }
+            else{
+                $smarty->display('admin.tpl');
+            }
+
+        }
+        elseif(isset($_GET["newlibrary"])){
+            if ($_GET["newlibrary"]=="list") {
+                $smarty->display('tpl/newlibrary.tpl');
+                // $smarty->assign("searchCategory", searchCategory());
+            }
+            else{
+                $smarty->display('admin.tpl');
+            }
+
+        }
+        else{
+            $smarty->display('admin.tpl');
+        }
+    }
+    else{
+        $smarty->display('admin.tpl');
+    }
 
 ?>

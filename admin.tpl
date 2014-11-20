@@ -10,14 +10,10 @@
     <link rel="stylesheet" href="./bootstrap/css/bootstrap-responsive.min.css">
 
     <!-- Framework CSS -->
-    <!-- <link href="css/estilos.css" rel="stylesheet" type="text/css" /> -->
-
     <link href="css/ui-lightness/jquery-ui-1.8.17.custom.css" rel="Stylesheet" type="text/css" />
 
     <link rel="stylesheet" href="css/blueprint/screen.css" type="text/css" media="screen, projection">
     <link rel="stylesheet" href="css/blueprint/print.css" type="text/css" media="print">
-
-    <!--[if lt IE 8]><link rel="stylesheet" href="css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
 
     <!-- Import fancy-type plugin for the sample page. -->
     <link rel="stylesheet" href="css/blueprint/plugins/fancy-type/screen.css" type="text/css" media="screen, projection">
@@ -25,38 +21,23 @@
     <script type="text/javascript" src="js/jquery-ui-1.8.17.custom.min.js"></script>
     <script type="text/javascript" src="js/jquery.maskedinput-1.2.2-co.min.js"></script>
     <script src="js/js_DataTables1.9.4/jquery.dataTables.min.js" language="javascript" type="text/javascript"></script>
-
     <script type="text/javascript" language="javascript" src="js/jquery.dropdownPlain.js"></script>
     <!-- <link rel="stylesheet" href="css/style_dropdowns.css" type="text/css" media="screen, projection"/> -->
     <link rel="stylesheet" href="css/style.css" type="text/css">
-
-
-
     <script src="js/jquery.si.js" type="text/javascript"></script>
-
     <link href="css/css_DataTables1.9.4/demo_table_jui.css" rel="stylesheet" type="text/css" />
     <!--Estilo del botón-->
-
-
     <script type="text/javascript" src="js/jquery-ui-datepicker-es.js"></script>
     <script type="text/javascript" src="js/prueba.js"></script>
-
-
     <script type="text/javascript" src="js/jquery.gdocsviewer.js"></script>
-
     <script src="js/jquery.jclock_es.js" type="text/javascript"></script>
 	<!-- SET UP AXUPLOADER  -->
 	<script src="librerias/ax-jquery-multiuploader/examples/jslibs/ajaxupload.js" type="text/javascript"></script>
     <script type="text/javascript" src="js/biblio.min.js"></script>
-
 	<link rel="stylesheet" href="librerias/ax-jquery-multiuploader/examples/css/classicTheme/style.css" type="text/css" media="all" />
 
 </head>
-
-<!-- Global IE fix to avoid layout crash when single word size wider than column width -->
-<!--[if IE]><style type="text/css"> body {word-wrap: break-word;}</style><![endif]-->
-
-<body onload="xajax_inicio(); Javascript:history.go(1); "  onunload="Javascript:history.go(1);">
+<body onload="xajax_inicio(); " >
 
 <div id="form" name="form"></div>
 
@@ -86,28 +67,25 @@
 
 
 			</div>
-                        <div id="saludo"></div>
 
         </div>
         <div class="container main-title">
-                            <div class="row" >
-
-                                        <div class="span12">
-                                            <div class="container-fluid"> <h1 class="cblanco fcenter"> Catálogo Virtual - Biblioteca Central</h2></div>
-                                        </div>
-
-                            </div>
+            <div class="row" >
+                <div class="span12">
+                        <div class="container-fluid"> <h1 class="cblanco fcenter"> Catálogo Virtual - Biblioteca Central</h1></div>
+                </div>
+            </div>
         </div>
         <div class="container div-login-main">
                 <div id="divformlogin"  name="formlogin">
                 </div>
 	    </div>
 	      <hr class="space">
-
 	      <div class="last container-fluid">
                 <div class="row-fluid">
-
                     <div class=" span12">
+                        <h3>{block name=title_pag} {/block}</h3>
+                        {block name=content}
                                 <hr class="space">
                                 <div id="imghome">
                                     <table>
@@ -135,6 +113,7 @@
                             <div class="paginacion">
                                 <div id="paginator" class="wp-pagenavi"></div>
                             </div>
+                        {/block}
                     </div>
                 </div>
         </div>

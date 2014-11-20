@@ -116,7 +116,6 @@
                 }
 
 
-                //$cadena="xajax_muestraFormGrafico()";
                 //$respuesta->script($cadena);
             }
 
@@ -155,121 +154,6 @@
 
         return $respuesta;
 	}
-
-	/************************************************************
-	Función que muestra las Capas que Contendrán los Graficos
-	************************************************************/
-	function muestraFormGrafico(){
-		$respuesta = new xajaxResponse();
-
-	    $idArea=$_SESSION["idarea"];
-
-	    $area_description="";
-		switch($idArea){
-		    case 1:
-		        $area_description="Aeronom&iacute;a";
-		    break;
-		    case 2:
-		        $area_description="Astronom&iacute;a";
-		    break;
-		    case 3:
-		        $area_description="Geod&eacute;sia";
-		    break;
-		    case 4:
-		        $area_description="Geomagnetismo";
-		    break;
-		    case 5:
-		        $area_description="Sismolog&iacute;a";
-		    break;
-		    case 6:
-		        $area_description="Variabilidad y Cambia Clim&aacute;tico";
-		    break;
-		    case 7:
-		        $area_description="Vulcanolog&iacute;a";
-		    break;
-
-		}
-
-		$formGrafico="<div><h1>Estad&iacute;sticas del &Aacute;rea de ".$area_description.":</h1></div>
-						<table class='tablecontent'>
-							<tr><td aling=top><div id='maestro_chart'></div></td><td><div id='detalle_chart' class='grafico'></div></td></tr>
-				   			<tr><td><p>Click en las barras para ver el detalle.</p></td></tr>
-						</table>";
-		$cadena="xajax_graficosEstadisticos()";
-		$respuesta->script($cadena);
-		$respuesta->Assign("estadisticas","style.display","block");
-		$respuesta->Assign("estadisticas","innerHTML",$formGrafico);
-		$respuesta->Assign("detalle_chart","style.display","none");
-		$respuesta->Assign("detalle_chart","style.display","none");
-		return $respuesta;
-	}
-
-	/*************************************************************
-	Función que Grafica la cantidad del Personal Activo y retirado
-	**************************************************************/
-	function graficosEstadisticos(){
-		$respuesta = new xajaxResponse();
-
-		// Connect to the DB
-		$link = connectToDB();
-		$strXML = "";
-		$strXML = "<chart caption='Contribuciones Científicas' subCaption='por Cantidad'  xAxisName='Tipo de Documento' yAxisName='Cantidad'  showBorder='0' formatNumberScale='0' numberSuffix=' ' bgColor='#D5E1F0,FFFFFF' bgAlpha='100,100' bgRatio='0,100' bgAngle='0' >";
-		$strQuery = "select * from category";
-		$result = mysql_query($strQuery) or die(mysql_error());
-		$idArea=$_SESSION["idarea"];
-		$idfrom=$_SESSION["idfrom"];
-		//Iterate through each factory
-		if ($result) {
-			while($ors = mysql_fetch_array($result)) {
-
-				$strQuery = "SELECT c.idcategory,Count(c.idcategory) as cantidad, c.category_description, s.idsubcategory, s.subcategory_description FROM data d, category c, subcategory s WHERE c.idcategory=s.idcategory and d.idsubcategory=s.idsubcategory and s.idcategory=".$ors['idcategory']." and ExtractValue(data_content,'publicaciones/areaPRI')=$idArea ORDER BY ExtractValue(data_content,'publicaciones/date_pub')";
-				$result2 = mysql_query($strQuery) or die(mysql_error());
-				$ors2 = mysql_fetch_array($result2);
-				$idcategory=$ors['idcategory'];
-				$linkDetalle = urlencode("\"javascript:ejecutarXajax($idfrom,$idArea);\"");
-
-			    switch($ors['idcategory']){
-			    	case 1:
-						$tabla="Pub";
-					break;
-			    	case 2:
-						$tabla="Pon";
-					break;
-			    	case 3:
-						$tabla="Inf. In";
-					break;
-			    	case 4:
-						$tabla="Asuntos Académicos";
-					break;
-			    }
-
-				if($ors['idcategory']==2){
-					if($ors2['cantidad']!=0){
-						$strXML .= "<set label='$tabla' value='" . $ors2['cantidad'] . "' />";
-					}
-				}
-				else{
-					if($ors2['cantidad']!=0){
-						$strXML .= "<set label='$tabla' value='" . $ors2['cantidad'] . "' link = ".$linkDetalle." />";
-					}
-				}
-
-				//free the resultset
-				mysql_free_result($result2);
-			}
-		}
-		mysql_close($link);
-
-		// Cerramos la etiqueta "chart".
-		$strXML .= "</chart>";
-		$grafico=renderChartHTML("graficos/swf_charts/Column3D.swf", "",$strXML, "maestro", 300, 300, false);
-		$respuesta->Assign("maestro_chart","innerHTML",$grafico);
-		return $respuesta;
-
-	}
-
-
-
 
 	/************************************************************
 	Función que muestra las Capas que Contendrán los Graficos
