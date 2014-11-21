@@ -120,10 +120,13 @@
 
 				}
 				   // origen
-				   $f_evento= "xajax_show_details(".$result["idbook"][$i]."); return false;";
+                   $href_edit="#";
+				   $f_evento= "onclick(xajax_show_details(".$result["idbook"][$i]."); return false;)";
 				   if ($_SESSION["origin"]=="back") {
 				   		if ($_SESSION["users_sede"]==$result["sede"][$i]) {
-					   		$f_evento= "xajax_editBook(".$result["idbook"][$i].",1); return false;";
+                            // $f_evento= "onclick(xajax_editBook(".$result["idbook"][$i].",1); return false;)";
+					   		$f_evento= "";
+                            $href_edit= "?edit=".$result["idbook"][$i]."";
 					   	}
 				   }
 
@@ -191,7 +194,7 @@
                    		$NumDewey = "<p><b>Código</b>: ".(string)$xmlt->NumDewey."</p>";
                    }
 
-				$titulo="<a  href='#' onclick='$f_evento' class='resultado' >".$titulo."</a>";
+				$titulo="<a  href='$href_edit' ".$f_evento." class='resultado' >".$titulo."</a>";
 				$del_order="";
 				if ($_SESSION["origin"]=="back") {
 
@@ -220,12 +223,6 @@
 				}
 
 				$class_list ="";
-				// if (($i+1)%2==0) {
-				// 	$class_list="list_block";
-				// 	}
-				// else{
-				// 	$class_list = "list_block_0";
-				// }
 				$class_list = (($i+1)%2==0) ? "list_block" : "list_block_0";
 
 				$html.="<div class='resultado-busqueda ".$class_list."'>";
@@ -849,9 +846,10 @@
 	        $diccionary_a = json_decode($diccionary,TRUE);
 	        //$_SESSION["reserva"]["idbook"][0] = -1;
 	        // unset($_SESSION["reserva"]);
+            $var_get = (isset($_SESSION["admin"])?"?search=category&type=":"#");
 	        $li ="";
 	        foreach ($diccionary_a["categoria"] as $key => $value) {
-	            $li .= "<li><a href='#".$key."' id='".$key."' class='span5' title='Busque en $value'><span>".$value."</span></a></li>";
+	            $li .= "<li><a href='$var_get".$key."' id='".$key."' class='span5' title='Busque en $value'><span>".$value."</span></a></li>";
 	        }
 			$html ="
 				<div class='nav_page'>
@@ -875,8 +873,9 @@
 	     	$objResponse->assign("resultSearch1", "style.display", "none");
 	        $objResponse->assign("searchCat","style.display","block");
 			$objResponse->assign("searchCat","innerHTML",$html);
-
-	        $objResponse->script("xajax_onclick_category()");
+            if (isset($_SESSION["frond"])) {
+                $objResponse->script("xajax_onclick_category()");
+            }
 
 			return $objResponse;
 

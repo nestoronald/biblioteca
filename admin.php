@@ -3505,14 +3505,34 @@
         }
         // search
         elseif(isset($_GET["search"])){
-            if ($_GET["search"]=="category") {
-                $smarty->display('tpl/category.tpl');
+            if ($_GET["search"]==="category") {
                 // $smarty->assign("searchCategory", searchCategory());
+                if (isset($_GET["type"])) {
+                    if ($_GET["type"]=="b_libros") {
+                        $smarty->display('tpl/book.tpl');
+                    }
+                    elseif($_GET["type"]=="b_pub_periodica"){
+                        $smarty->display('tpl/publication.tpl');
+                    }
+                    elseif($_GET["type"]=="b_mapas"){
+                        $smarty->display('tpl/map.tpl');
+                    }
+                    elseif($_GET["type"]=="b_tesis"){
+                        $smarty->display('tpl/thesys.tpl');
+                    }
+                    elseif($_GET["type"]=="b_otros"){
+                        $smarty->display('tpl/other.tpl');
+                    }
+                    else{
+                        $smarty->display('tpl/book.tpl');
+                    }
+                }else{
+                    $smarty->display('tpl/category.tpl');
+                }
             }
             else{
-                $smarty->display('admin.tpl');
+                $smarty->display('tpl/category.tpl');
             }
-
         }
         //reservas
         elseif(isset($_GET["loan"])){
@@ -3523,7 +3543,6 @@
             else{
                 $smarty->display('admin.tpl');
             }
-
         }
         elseif(isset($_GET["newlibrary"])){
             if ($_GET["newlibrary"]=="list") {
@@ -3533,11 +3552,22 @@
             else{
                 $smarty->display('admin.tpl');
             }
+        }
+        elseif (isset($_GET["edit"])) {
+            if (!empty($_GET["edit"]) and is_numeric($_GET["edit"])) {
+                $smarty->assign("id", $_GET["edit"]);
+                $smarty->display('tpl/edit.tpl');
 
+            }
+            else{
+                $smarty->display('admin.tpl');
+            }
+            # code...
         }
         else{
             $smarty->display('admin.tpl');
         }
+
     }
     else{
         $smarty->display('admin.tpl');
