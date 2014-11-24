@@ -3509,7 +3509,13 @@
                 // $smarty->assign("searchCategory", searchCategory());
                 if (isset($_GET["type"])) {
                     if ($_GET["type"]=="b_libros") {
-                        $smarty->display('tpl/book.tpl');
+                        if ($_GET["query"]=="all") {
+                            $smarty->assign("formSearch","formSearch");
+                            $smarty->display('tpl/list_query.tpl');
+                        }
+                        else{
+                            $smarty->display('tpl/book.tpl');
+                        }
                     }
                     elseif($_GET["type"]=="b_pub_periodica"){
                         $smarty->display('tpl/publication.tpl');

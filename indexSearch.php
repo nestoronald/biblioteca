@@ -947,6 +947,7 @@
                     </div>
 				</div>
                 <button id="btn-search">Buscar</button>
+                <a id="btn-search-1" href="?search=category&type='.$id.'&query=all">Buscar</a>
                 <button id="btn-clear">Limpiar</button>
 
 				<div class="clear"></div>
@@ -987,7 +988,8 @@
 		}
 		$sug = substr($sug, 0,-1);
 		$sug .= "]";
-		// $objResponse->alert(print_r( $sug, TRUE));
+        // $_SESSION["form_search"] = xajax.getFormValues("formSearch");
+        // $objResponse->alert(print_r( $_SESSION["form_search"], TRUE));
 
 	    //$objResponse->assign('botonGuardarEditar', 'innerHTML',$comboYear);
 	    $objResponse->script('
@@ -1029,6 +1031,7 @@
 	    		$("#search-advanced").tooltip({
 	    			trigger:"hover",
 	    			placement:"bottom"});
+
 
 		');
 		return $objResponse;
@@ -1443,5 +1446,5 @@
 	$xajax->registerFunction('editPass');
 	$xajax->registerFunction('editMyprofile');
 	$xajax->registerFunction('editMyProfile_frm');
-	$xajax->registerFunction('details_member');
+    $xajax->registerFunction('details_member');
 ?>
