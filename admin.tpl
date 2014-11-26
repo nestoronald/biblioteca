@@ -137,5 +137,6 @@
 <script src="./bootstrap/js/modal.js"></script>
 <script src="./bootstrap/js/button.js"></script>
 <!-- <script src="./bootstrap/js/bootstrap-scrollspy.js"></script> -->
+<div>{block name=script}{/block}</div>
 </body>
 </html>

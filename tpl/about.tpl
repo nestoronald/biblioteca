@@ -5,16 +5,16 @@
         <div class="span3">
             <ul class="nav nav-sidebar nav-list">
                 <li class="active"><a href="#acceso"> <i class="icon-book"></i> Datos de Acceso <i class="icon-chevron-right right"></i></a></li>
-                <li><a href="#datos_personal"><i class="icon-book"></i> Información personal <i class="icon-chevron-right right"></i></a></li>
+                <li><a href="#datos_personal"><i class="icon-book"></i> Información de usuario <i class="icon-chevron-right right"></i></a></li>
 
             </ul>
         </div>
         <div class="span9">
             <div class="reser" id="acceso">
-                {if $smarty.session.user_id}
+                {if $smarty.session.idusers}
                 <div class="block_igp">
                     <h3>Datos de Acceso</h3>
-                    <p> <span>Usuario:</span> {$smarty.session.username}</p>
+                    <p> <span>Usuario:</span> {$smarty.session.admin}</p>
                     <p> <span>Email:</span> <span id="email_profile"> </span></p>
                     <p> <span>Contraseña:</span> *** <a href="#editMyPass" data-toggle="modal">Cambiar</a></p>
                     <div id="editMyPass" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -32,10 +32,6 @@
                                 <input name="newpass" type="password">
                                 <p> <span>Repetir Contraseña Nueva:</span></p>
                                 <input name="renewpass" type="password">
-                                <!-- <div>
-                                   <button class="btn" onclick="xajax_editPass(form)">Guardar</button>
-                                   <button class="btn" data-dismiss="modal" aria-hidden="true">cancelar</button>
-                                </div> -->
                             </form>
                           </div>
                           <div class="modal-footer" id="modalfooter">
@@ -45,20 +41,16 @@
                     </div>
                 </div>
 
-                    <form name="frmreserva" id="frmreserva">
-                        <div class="actionbtn">
-                        </div>
-                    </form>
-
                 {/if}
             </div>
             <div class="reser hide" id="datos_personal">
                 <div class="block_igp">
-                    <h3>Información personal <span>(<a href="#editMyProfile" onclick="xajax_editMyProfile_frm();" data-toggle="modal"><i class="icon-pencil"></i></a>)</span></h3>
-                    <!-- <p> <span>Nombre Completo:</span> {$details.names}</p>
+                    <h3>Información de usuario <span>(<a href="#editMyProfile" onclick="xajax_editMyProfile_frm();" data-toggle="modal"><i class="icon-pencil"></i></a>)</span></h3>
+                    <p> <span>Biblioteca:</span> {$details.biblioteca}</p>
+                    <p> <span>Nombre Completo:</span> {$details.names}</p>
                     <p> <span>DNI:</span> {$details.dni}</p>
                     <p> <span>Dirección:</span> {$details.dir} </p>
-                    <p> <span>Teléfono:</span> {$details.tel} </p> -->
+                    <p> <span>Teléfono:</span> {$details.tel} </p>
                     <div id="profileconte"></div>
 
                     <div id="editMyProfile" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

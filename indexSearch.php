@@ -5,13 +5,12 @@
 	function auxSearchShow($pageSize,$currentPage,$form="",$seccion="",$idarea=0,$idauthor=0){
 
 		$respuesta = new xajaxResponse();
-		// $respuesta->alert(print_r($form, TRUE));
-		if ($form["search_option"]=="s_simple") {
+		$respuesta->alert(print_r($form, TRUE));
+		if ($form=="s_simple") {
 			$form_get = "xajax.getFormValues('formSearch')";
-
 			// $respuesta->Alert($form_get);
 		}
-		elseif($form["search_option"]=="s_advanced"){
+		elseif($form=="s_advanced"){
 			$form_get = "xajax.getFormValues('frm_search_ad')";
 
 		}
@@ -53,7 +52,6 @@
 		$objResponse->assign('consultas','style.display','none');
 		$objResponse->assign("imghome","style.display","none");
 		$objResponse->assign("option_category","style.display","none");
-
 
 		$objResponse->assign("resultSearch1","style.display","block");
 		$objResponse->assign("resultSearch1","innerHTML",$html);
@@ -287,7 +285,6 @@
         if ($form["search_option"]=="s_simple") {
         	$html_conte.='<a href="#" onclick="xajax_abstractShow(\'consultas\'); xajax_abstractShow(\'divformSearch\'); xajax_abstractHide(\'resultSearch\'); xajax_abstractHide(\'resultSearch1\'); xajax_abstractHide(\'paginator\'); ">'.$ht["title"].'</a> >>';
         	$html_conte .='<span class="fright"><a href="#" onclick="xajax_abstractShow(\'consultas\'); xajax_abstractShow(\'divformSearch\'); xajax_abstractHide(\'resultSearch\'); xajax_abstractHide(\'resultSearch1\'); xajax_abstractHide(\'paginator\'); "> << Retornar </a></span>';
-
         }
         elseif ($form["search_option"]=="s_advanced") {
         	$html_conte.='<a href="#" onclick="xajax_abstractShow(\'consultas\'); xajax_abstractHide(\'divformSearch\');xajax_abstractHide(\'resultSearch1\'); xajax_abstractHide(\'paginator\'); xajax_search_advanced(); return false;">Opciones Avanzadas</a> >>';
@@ -664,7 +661,6 @@
 		else{
 			return -100;
 		}
-
 	}
 
 	function FormReservar($idbook=0){
@@ -693,16 +689,13 @@
 		$objResponse->assign("conte_details","style.display","none");
 		$objResponse->assign("resultSearch1","style.display","none");
 		$objResponse->assign("paginator","style.display","none");
-
 		$objResponse->script("
 					$('.btnReserva').click(function(){
 						xajax_confirmReserva(xajax.getFormValues(frmReserva));
  	                    return false;
 					})
 					$('#DivReserva a.btn').css('display','none')
-
 					");
-
 		return $objResponse;
 	}
 	function confirmReserva($form){
@@ -746,7 +739,6 @@
 		// $objResponse->Assign($div,"style.display","block");
 		return $objResponse;
 	}
-
 
 	function send_mail_prepare($iduser, $data_loan) {
 		$response["user"]="";$response["admin"]="";
@@ -804,7 +796,6 @@
 	    else{
 	        return false;
 	    }
-
 	}
 	///--category catalog
 	function onclick_category(){
@@ -878,7 +869,6 @@
             }
 
 			return $objResponse;
-
 	}
 
 	function formConsultaShow($idbutton,$seccion="",$idarea=0,$id=""){
@@ -988,7 +978,8 @@
 		}
 		$sug = substr($sug, 0,-1);
 		$sug .= "]";
-        // $_SESSION["form_search"] = xajax.getFormValues("formSearch");
+        // $_SESSION["form_search"] = getFormValues("formSearch");
+        //$objResponse->script("");
         // $objResponse->alert(print_r( $_SESSION["form_search"], TRUE));
 
 	    //$objResponse->assign('botonGuardarEditar', 'innerHTML',$comboYear);
@@ -1031,7 +1022,6 @@
 	    		$("#search-advanced").tooltip({
 	    			trigger:"hover",
 	    			placement:"bottom"});
-
 
 		');
 		return $objResponse;
@@ -1312,12 +1302,6 @@
 		return $result;
 	}
 
-	function formReset(){
-		$objResponse = new xajaxResponse();
-                $objResponse->script('document.getElementById(\'formSearch\').reset()');
-		return $objResponse;
-	}
-
 	function abstractShow($div){
 		$objResponse = new xajaxResponse();
 		$objResponse->Assign($div,"style.display","block");
@@ -1362,7 +1346,6 @@
 		$html.= "</p>";
 		return $html;
 	}
-
 
 	function paginatorSearch($page,$ipp,$total,$form="",$idarea=0){
 		$respuesta = new xajaxResponse();
@@ -1413,23 +1396,13 @@
 
 	/******* Busqueda**********/
 
-	$xajax->registerFunction('pasaValor');
-	$xajax->registerFunction('comboCategoryShow');
-	$xajax->registerFunction('comboAreaShow');
-
-	$xajax->registerFunction('comboReferenciaAutorShow');
-
 	$xajax->registerFunction('paginatorSearch');
 	$xajax->registerFunction('auxSearchShow');
 	$xajax->registerFunction('formConsultaShow');
 	$xajax->registerFunction('abstractHide');
 	$xajax->registerFunction('abstractShow');
-    $xajax->registerFunction('formReset');
 	$xajax->registerFunction('searchPublicationShow');
 	$xajax->registerFunction('searchPublication');
-	$xajax->registerFunction('comboEstadoShow');
-	$xajax->registerFunction('comboMonthShow');
-	$xajax->registerFunction('comboYearShow');
 
 	$xajax->registerFunction('searchCategory');
 	$xajax->registerFunction('onclick_category');

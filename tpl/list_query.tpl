@@ -3,4 +3,7 @@
 <!-- <form action="" id="formSearch" >
     <input type="text" name="tituloSearch" id="" value="lima">
 </form> -->
-<script>xajax_auxSearchShow(20,1,{$smarty.session.formSearch},"","");</script>{/block}
+{/block}
+{block name=script}
+<script>xajax_auxSearchShow(20,1,"s_simple","","");</script>
+{/block}
