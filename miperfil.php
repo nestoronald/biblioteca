@@ -14,15 +14,15 @@
  require("adminModel.php");
  session_start();
 
- function editPass($form){
+ function editPass($form=""){
     $objResponse = new xajaxResponse();
     $msj="";
     // $objResponse->alert(print_r($form,true));
     if (isset($_SESSION["iduser"])) {
-        $pass = $form["pass"];
-        $newpass = $form["newpass"];
-        $renewpass = $form["renewpass"];
-        if (empty(trim($pass)) or empty(trim($newpass)) or empty(trim($renewpass))) {
+        $pass = trim($form["pass"]);
+        $newpass = trim($form["newpass"]);
+        $renewpass = trim($form["renewpass"]);
+        if (empty($pass) or empty($newpass) or empty($renewpass)) {
             $msj = "Ningun campo puede estar vacio";
         }
         else{

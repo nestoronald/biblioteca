@@ -24,7 +24,7 @@
                           </div>
                           <div class="modal-body" id="modalbody">
                             <form name="frmEditPass" id="frmEditPass">
-                                <input type="hidden" name="iduser" value="{$details.id}">
+                                <input type="hidden" name="iduser" value="{$smarty.session.idusers}">
                                 <div id="msj-pass" class="error"></div>
                                 <p> <span>Contraseña Actual:</span></p>
                                 <input name="pass" type="password" >
@@ -35,7 +35,7 @@
                             </form>
                           </div>
                           <div class="modal-footer" id="modalfooter">
-                            <button class="btn" onclick="xajax_editPass(xajax.getFormValues('frmEditPass')); return false;">Guardar</button>
+                            <button class="btn" onclick="xajax_editPass_admin(xajax.getFormValues('frmEditPass')); return false;">Guardar</button>
                                    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                           </div>
                     </div>

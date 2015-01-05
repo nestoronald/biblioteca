@@ -65,16 +65,22 @@
 		    $sql= "select * from author where idauthor= ".$idauthor;
 		     if ($idauthor==-100) {
 		     	// $author_keyword = explode(" ", "james");
-		     	$author_keyword = explode(" ", $author);
-		     	$sql= "select * from author where" ;
-		     	$i=1;
-		     	foreach ($author_keyword as $key => $value) {
-		     		$sql.= " author_surname like '%".$value."%' or author_name like '%".$value."%'";
-		     		if ($i!=count($author_keyword)) {
-		     			$sql.="or";
-		     		}
-		     		$i++;
-		     	}
+                $author = trim($author);
+                if (strpos($author, ' ')===false) {
+                    $sql = "select * from author where author_surname like '%".$author."%' or author_name like '%".$author."%'";
+                }
+                else{
+    		     	$author_keyword = explode(" ", $author);
+    		     	$sql= "select * from author where ";
+    		     	$i=1;
+    		     	foreach ($author_keyword as $key => $value) {
+    		     		$sql.= " author_surname like '%".$value."%' or author_name like '%".$value."%'";
+    		     		if ($i!=count($author_keyword)) {
+    		     			$sql.=" or";
+    		     		}
+    		     		$i++;
+    		     	}
+                }
 		   //   	$sql= "select * from author where (
 		   //   		(author_surname like '%".$surname."%' or author_name like '%".$name."%') or
 					// (author_surname like '%".$name."%' or author_name like '%".$surname."%')

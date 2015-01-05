@@ -62,9 +62,9 @@
 									$id_format .= ")";
 									$sql .=	" AND (ExtractValue(book_data,'book/authorPRI/idauthor0') in $id_format )";
 								}
-								// else{
-								// 	$sql .= $result["Query"];
-								// }
+								else{
+									$sql .= " AND (ExtractValue(book_data,'book/authorPRI/idauthor0') = '-100' )";
+								}
 
 
 						}

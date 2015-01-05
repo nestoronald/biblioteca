@@ -3379,6 +3379,43 @@
         return $objResponse;
 
     }
+    function editPass_admin($form=""){
+       $objResponse = new xajaxResponse();
+       $msj="";
+       // $objResponse->alert(print_r($_SESSION,true));
+       if (isset($_SESSION["idusers"])) {
+           $pass = trim($form["pass"]);
+           $newpass = trim($form["newpass"]);
+           $renewpass = trim($form["renewpass"]);
+           if (empty($pass) or empty($newpass) or empty($renewpass)) {
+               $msj = "Ningun campo puede estar vacio";
+           }
+           else{
+               $pass = md5($pass);
+               $newpass = md5($newpass);
+               $renewpass = md5($renewpass);
+               if ($newpass!=$renewpass) {
+                   $msj = "Las contraseñas no coinciden";
+                   $objResponse->script("$('#renewpass').focus(); return false;");
+               }
+               elseif ($pass==$newpass) {
+                   $msj = "La contraseña nueva debe ser diferente a la actual";
+               }
+               else{
+                   if (newPassword($form)) {
+                       $html = "<div class='exito'>La Contraseña ha sido actualizado correctamente</div>";
+                       $objResponse->assign("modalbody","innerHTML",$html);
+                       $objResponse->assign("modalfooter","innerHTML",$html);
+                   }
+                   else{
+                       $msj="Verifique que la contraseña actual sea la correcta";
+                   }
+               }
+           }
+       }
+       $objResponse->assign("msj-pass","innerHTML",$msj);
+       return $objResponse;
+    }
 
 	/*******************************************************************
 	Registrar las Funciones
@@ -3483,6 +3520,7 @@
     $xajax->registerFunction('delete_reserva');
     $xajax->registerFunction('cambiar_estado');
     $xajax->registerFunction('show_details_back');
+    $xajax->registerFunction('editPass_admin');
 
 	$xajax->processRequest();
 
